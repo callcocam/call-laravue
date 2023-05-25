@@ -1,0 +1,33 @@
+.make-input .make-input-element {
+  @apply relative mt-1.5 flex;
+}
+.make-input .make-input-element input[type='password'],input[type='text'], input[type='text'],input[type='email'],input[type='date'], textarea{
+  @apply w-full border rounded-md border-slate-300 bg-transparent px-4 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent;
+}
+
+.make-input .make-input-element input[type='radio']{
+  @apply h-5 w-5 rounded-full border-slate-400/70 bg-slate-100 checked:border-slate-500 checked:bg-slate-500 hover:border-slate-500 focus:border-slate-500 dark:border-navy-500 dark:bg-navy-900 dark:checked:border-navy-400 dark:checked:bg-navy-400;
+}
+
+.make-input .make-input-element select{
+  @apply mt-1.5 w-full border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent;
+}
+
+
+.make-input .make-input-element input[type='checkbox']{
+  @apply  h-5 w-5 rounded bg-slate-100 border-slate-400/70 checked:bg-slate-500 checked:border-slate-500 hover:border-slate-500 focus:border-slate-500 dark:bg-navy-900 dark:border-navy-500 dark:checked:bg-navy-400 dark:checked:border-navy-400;
+}
+.make-input-label {
+  @apply block 
+}
+.make-input-element--submit button, input[type='submit']{
+@apply bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90;
+}
+
+.make-input-element--group{
+  @apply flex flex-col py-2;
+}
+
+.make-input-element--group .make-input-group-repeatable{
+  @apply flex flex-col py-2 border ;
+}

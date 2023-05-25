@@ -1,0 +1,88 @@
+/* Variables */
+:root {
+    @apply [--fm-margin-x:4rem]
+    [--fm-main-sidebar-width:2.5rem]
+    [--fm-sidebar-panel-width:208px]
+    [--fm-sidebar-panel-min-width:44px]
+    md:[--fm-margin-x:1.5rem]
+    lg:[--fm-main-sidebar-width:0rem]
+    lg:[--fm-sidebar-panel-width:208px]
+    xl:[--fm-margin-x:2rem];
+}
+
+.fm-has-min-sidebar {
+    @apply xl:[--fm-margin-x:2.5rem];
+}
+
+.fm-is-sidebar-open {
+    @apply xl:[--fm-margin-x:1.5rem];
+}
+
+
+/* Sidebar */
+.fm-main-sidebar {
+    @apply fixed top-0 left-0 z-40 h-full w-[var(--fm-main-sidebar-width)] shrink-0 -translate-x-full transform-gpu transition-transform duration-200 ease-in md:z-[60] md:translate-x-0;
+}
+
+.fm-is-sidebar-open .fm-main-sidebar {
+    @apply translate-x-0;
+}
+
+.fm-sidebar-panel {
+    @apply fixed top-0 left-0 z-30 h-full w-[calc(var(--fm-main-sidebar-width)+var(--fm-sidebar-panel-width))] -translate-x-full transform-gpu shadow-soft transition-transform delay-150 duration-[.25s] ease-in dark:shadow-navy-900/60 md:delay-[unset];
+}
+
+.fm-is-sidebar-open .fm-sidebar-panel {
+    @apply translate-x-0 ease-out;
+}
+
+.fm-sidebar-panel-min {
+    @apply fixed z-40 h-full w-[var(--fm-sidebar-panel-min-width)] shrink-0 -translate-x-full transform-gpu shadow-soft transition-transform duration-[.25s] ease-in dark:shadow-navy-900/60 md:translate-x-[var(--fm-main-sidebar-width)];
+}
+
+.fm-is-sidebar-open .fm-sidebar-panel-min {
+    @apply -translate-x-full;
+}
+
+/* Header */
+nav.fm-header {
+    @apply fixed top-0 right-0 z-20 flex h-[61px] w-full border-b border-slate-150 transition-all duration-[.25s] dark:border-navy-700 md:w-[calc(100%-var(--fm-main-sidebar-width))];
+}
+
+nav.fm-header:before {
+    @apply absolute -left-[calc(100vw-100%)] h-full w-[calc(100vw-100%)] bg-white content-[''] dark:bg-navy-750;
+}
+
+nav.fm-header .fm-header-container {
+    @apply px-[var(--fm-margin-x)] transition-[padding,width] duration-[.25s];
+}
+
+.fm-has-min-sidebar nav.fm-header {
+    @apply md:w-[calc(100%-(var(--fm-main-sidebar-width)+var(--fm-sidebar-panel-min-width)))];
+}
+
+.fm-is-sidebar-open nav.fm-header {
+    @apply xl:w-[calc(100%-(var(--fm-main-sidebar-width)+var(--fm-sidebar-panel-width)))];
+}
+
+.fm-is-header-blur nav.fm-header .fm-header-container {
+    @apply backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:supports-[backdrop-filter]:!bg-navy-750/80;
+}
+
+.fm-is-header-not-sticky nav.fm-header {
+    @apply absolute;
+}
+
+/* Main content */
+.fm-main-content {
+    @apply h-[600px] mt-[60px] grid grid-cols-1 place-content-start transition-[width,margin-left,margin-right,padding-left,padding-right] duration-[.25s] ease-in print:m-0 md:ml-[var(--fm-main-sidebar-width)];
+}
+
+.fm-has-min-sidebar .fm-main-content {
+    @apply md:ml-[calc(var(--fm-main-sidebar-width)+var(--fm-sidebar-panel-min-width))];
+}
+
+.fm-is-sidebar-open .fm-main-content {
+    @apply ease-out xl:ml-[calc(var(--fm-main-sidebar-width)+var(--fm-sidebar-panel-width))];
+}
+
