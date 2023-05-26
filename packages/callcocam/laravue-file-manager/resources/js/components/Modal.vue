@@ -1,7 +1,6 @@
 <template>
-    <Teleport to='#modals'>
-        <TransitionRoot appear :show="isOpen" as="template">
-            <Dialog as="div" @close="closeModal" class="relative z-10">
+   <TransitionRoot appear :show="isOpenModal" as="template">
+            <Dialog as="div" @close="closeModal" class="relative z-50">
                 <TransitionChild v-if="shadow" as="template" enter="duration-300 ease-out" enter-from="opacity-0"
                     enter-to="opacity-100" leave="duration-200 ease-in" leave-from="opacity-100" leave-to="opacity-0">
                     <div class="fixed inset-0 bg-black bg-opacity-25" />
@@ -32,7 +31,6 @@
                 </div>
             </Dialog>
         </TransitionRoot>
-    </Teleport>
 </template>
 <script setup>
 import { ref, defineEmits, computed } from 'vue'
@@ -56,7 +54,7 @@ const props = defineProps({
 
 const emit = defineEmits(['closeModal'])
 
-const isOpen = computed(() => props.isOpen)
+const isOpenModal = computed(() => props.isOpen)
 
 function closeModal() {
     emit('closeModal', false)
