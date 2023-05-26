@@ -45,7 +45,7 @@ class RouteServiceProvider extends ServiceProvider
                     ->prefix('api')
                     ->group(function () {
                         Route::middleware('auth:sanctum')->group(function () {
-                            $path = app_path(Str::afterLast("Http\\Controllers\\API", 'App\\'));
+                            $path = app_path(Str::afterLast("Http\\Controllers\\Api", 'App\\'));
                             $path = Str::replace('/', DIRECTORY_SEPARATOR, $path);
                             $path = Str::replace('\\', DIRECTORY_SEPARATOR, $path);
                             $this->configureDynamicComponent($path);
@@ -74,7 +74,7 @@ class RouteServiceProvider extends ServiceProvider
             if (class_exists($namespace)) {
                 $reflectionClass = new ReflectionClass($namespace);
                 if ($reflectionClass->isInstantiable()) {
-                    $path = Str::afterLast($namespace, "API\\");
+                    $path = Str::afterLast($namespace, "Api\\");
                     $path = Str::beforeLast($path, "Controller");
                     $path = Str::slug($path);
                     $path = Str::plural($path);

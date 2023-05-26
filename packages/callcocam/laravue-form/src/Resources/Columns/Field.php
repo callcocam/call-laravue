@@ -9,10 +9,13 @@
 namespace SIGA\Form\Resources\Columns;
 
 use Illuminate\Support\Str;
+use SIGA\Form\Resources\Columns\Traits\WithDecorator;
 
 class Field extends Fluent
 {
 
+    use WithDecorator;
+    
     public function __construct($label, $name = null)
     {
         if (!$name) {
@@ -32,25 +35,38 @@ class Field extends Fluent
     public static function make($label, $name = null)
     {
         $field = new static($label, $name);
+
+        return $field;
+    }
+
+
+    public static function date($label, $name = null)
+    {
+        $field = new static($label, $name);
+
+        $props = $field->props;
+
+        $field->offsetSet('props', array_merge($props, ['type' => 'date']));
+
         return $field;
     }
 
     public static function submit($label, $name = null)
     {
         $field = new static($label, $name);
-        
-        $field->offsetSet(
-            'props',
-            [
-                'label' => $label,
-                'type' => 'text',
-                'type' => 'submit',
-                'disableErrors' => true,
-                'styles' => 'rounded',
-                'variant' => 'primary',
-                'icon' => 'fa-regular-save',
-            ]
-        );
+
+        $props = $field->props;
+
+        $submit = [
+            'type' => 'submit',
+            'disableErrors' => true,
+            'styles' => 'rounded',
+            'variant' => 'primary',
+            'icon' => 'fa-regular-save',
+        ];
+
+        $field->offsetSet('props', array_merge($props, $submit));
+
 
         return $field;
     }

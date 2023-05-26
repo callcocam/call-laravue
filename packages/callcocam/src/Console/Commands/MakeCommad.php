@@ -109,6 +109,7 @@ abstract class MakeCommad extends Command
             return File::get(base_path($this->option('template')));
         }
         $stub = match ($file) {
+            'resource' => File::get(__DIR__ . '/stubs/api-resource.stub'),
             'api' => File::get(__DIR__ . '/stubs/api-controller.stub'),
             'edit' => File::get(__DIR__ . '/stubs/edit-component.stub'),
             'delete' => File::get(__DIR__ . '/stubs/delete-component.stub'),
@@ -129,6 +130,19 @@ abstract class MakeCommad extends Command
                     '-m' => true,
                     '-f' => true,
                     '-s' => true,
+                ]);
+            }
+        }
+    }
+
+    protected function resorceExist($resourceName, $resourceLastName)
+    {
+        if (!class_exists($resourceName)) {
+            $resource = (bool) $this->confirm('A resource <comment>' . $resourceName . '</comment> não existe. Você gostaria de criar?');
+
+            if ($resource) {
+                $this->call('make:api-resource', [
+                    'name' => $resourceLastName
                 ]);
             }
         }

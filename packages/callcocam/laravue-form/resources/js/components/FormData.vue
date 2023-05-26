@@ -44,7 +44,7 @@
                                     </h2>
                                 </div>
                             </div>
-                            <div class="space-y-4 p-4 sm:p-5 gird grid-cols-12">
+                            <div class="gap-4 p-4 sm:p-5 grid grid-cols-12">
                                 <template v-for="(children, index) in childrens" :key="index">
                                     <template v-if="children.props.hasOwnProperty('name')">
                                         <CFormInput v-bind="children.props" :value="form[children.props.name]"
@@ -125,7 +125,9 @@ export default {
     methods: {
         async get() {
 
-            const { params } = this.$route
+            const { params, name } = this.$route
+
+            let endpoint = ''
 
             if (this.isLoading) {
 
@@ -136,17 +138,27 @@ export default {
             this.isLoading = true
 
             try {
-
                 if (has(params, 'id')) {
-
-                    const { data } = await this.$form.get(this.endpoint.concat('/').concat(params.id).concat('/edit'), {})
+                    if (this.endpoint) {
+                        endpoint = this.endpoint.concat('/').concat(params.id).concat('/edit')
+                    }
+                    else {
+                        endpoint = name.replace('.', '/#/')
+                        endpoint = endpoint.replace('#', params.id)
+                    }
+                    const { data } = await this.$form.get(endpoint, {})
 
 
                     this.applyInitialSchema(data)
                 }
                 else {
-
-                    const { data } = await this.$form.get(this.endpoint.concat('/create'), {})
+                    if (this.endpoint) {
+                        endpoint = this.endpoint.concat('/create')
+                    }
+                    else {
+                        endpoint = name.replace('.', '/')
+                    }
+                    const { data } = await this.$form.get(endpoint, {})
 
                     this.applyInitialSchema(data)
                 }
@@ -214,10 +226,19 @@ export default {
             }
             this.isLoading = true
             this.applyInitialValues(this.form)
+
+            let endpoint = ''
+            const { params, name } = this.$route
             try {
                 useManagerErrorsStore().setErrors({})
-                if (has(this.form, 'id')) {
-                    const { data } = await this.$form.put(this.endpoint.concat('/').concat(this.form.id), this.formData)
+                if (has(params, 'id')) {
+                    if (this.endpoint) {
+                        endpoint = this.endpoint.concat('/').concat(params.id)
+                    }
+                    else {
+                        endpoint = name.replace('.edit', ('/').concat(params.id)).replace('.create', '')
+                    }
+                    const { data } = await this.$form.put(endpoint, this.formData)
                     this.$emit('success', data)
                 }
                 else {

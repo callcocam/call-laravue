@@ -1,6 +1,5 @@
 <template>
     <router-view />
-    <div id="modals"></div>
     <div class="grid grid-col-12">
         <div class="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-1 xl:col-span-1"></div>
         <div class="col-span-2 sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-2"></div>

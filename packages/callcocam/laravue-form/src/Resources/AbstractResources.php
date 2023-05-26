@@ -15,15 +15,23 @@ use Illuminate\Support\Str;
 abstract class AbstractResources extends Fluent implements ResourcesInterface
 {
 
-    public function __construct($label, $endpoint, $name = null)
+    public function __construct($label=null, $endpoint=null, $name = null)
     {
         $this->label = $label;
         $this->endpoint = $endpoint;
         $this->name = $name;
     }
 
+    public function init($label, $endpoint, $name = null)
+    {
+        $this->label = $label;
+        $this->endpoint = $endpoint;
+        $this->name = $name;
+        return $this;
+    }
 
-    public static function make($label, $endpoint, $name = null)
+
+    public static function make($label=null, $endpoint=null, $name = null)
     {
         $resource = new static($label,  $endpoint, $name);
         $resource->schema = $resource->columns();

@@ -10,6 +10,7 @@ namespace SIGA\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use SIGA\Console\Commands\APIControllerCommand;
+use SIGA\Console\Commands\APIResourceCommand;
 
 class SigaServiceProvider extends ServiceProvider
 {
@@ -23,7 +24,8 @@ class SigaServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
 
             $this->commands([
-                APIControllerCommand::class
+                APIControllerCommand::class,
+                APIResourceCommand::class
             ]);
         }
     }

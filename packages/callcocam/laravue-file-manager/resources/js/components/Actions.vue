@@ -46,6 +46,7 @@ import { ref, computed , inject} from 'vue';
 import moment from 'moment';
 import { useManagerFilesStore } from '@file-manager/stores/files'
 import { useManagerDirStore } from '@file-manager/stores/dirs';
+import { useManagerParamsStore } from '@file-manager/stores/params';
 import { downloadFile } from '@file-manager/helpers';
 
 
@@ -53,6 +54,7 @@ const APIHttp = inject('APIHttp')
 
 const params = computed(() => useManagerFilesStore().params)
 
+const { setParams } = useManagerParamsStore()
 const { setFiles, loadStoreFiles, setLoading } = useManagerFilesStore()
 const { loadStoreDirs } = useManagerDirStore()
 

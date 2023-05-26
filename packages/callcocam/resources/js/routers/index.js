@@ -2,105 +2,76 @@
 import { createRouter, createWebHistory } from "vue-router";
 import App from "@/views/layouts/App.vue";
 import Dashboard from "@/views/Dashboard.vue";
+import Index from "@/views/crud/Index.vue";
+import { map } from "lodash";
 
-const createRoute = (path, name, label, index, component, children) => {
-    if (name) {
-        if (name.hasOwnProperty("name")) {
-            name = name.name;
-        }
-    }
+
+const createMenuRoute = (path_name, route_name, children = []) => {
     return {
-        path,
-        name,
-        component,
-        meta: {
-            label,
-            index,
-        },
-        children,
-    };
-};
-
-const createMenuRoute = (menu, menus, component, submenus) => {
-    let path_name = menu.path_name;
-    if (menus) {
-        path_name = menus.path_name.concat(path_name);
+        path: path_name,
+        name: route_name,
+        component: () => import("@/views/crud/Index.vue"),
+        children
     }
-    return createRoute(
-        path_name,
-        menu.route_name,
-        menu.title,
-        true,
-        component,
-        submenus
-    );
 };
 
-const createSubRoute = (sub, component) => {
-    return createRoute(
-        sub.path_name,
-        sub.route_name,
-        sub.title,
-        false,
-        component
-    );
-};
+const createSubRoute = (sub) => {
+    let sub_path_name = sub.path_name;
+    let sub_route_name = sub.name;
 
-const createCrud = (item) => {
-    const children = [];
-
-    const path = item.path_name;
-    const route_name = item.route_name;
-    const title = item.title;
-
-    children.push(
-        createRoute(path, route_name, title, true, () =>
-            import("@/views/crud/List.vue")
-        ),
-        [
-            {
-                path: path.concat("/:id/excluir"),
-                name: route_name.concat(".destroy"),
-                component: () => import("@/views/crud/Delete.vue"),
-            },
-        ]
-    );
-    children.push(
-        createRoute(
-            path.concat("/:id/editar"),
-            route_name.concat(".edit"),
-            title,
-            true,
-            () => import("@/views/crud/Edit.vue")
-        )
-    );
-    children.push(
-        createRoute(
-            path.concat("/:id/visualizar"),
-            route_name.concat(".view"),
-            title,
-            true,
-            () => import("@/views/crud/View.vue")
-        )
-    );
-    children.push(
-        createRoute(
-            path.concat("/cadastar"),
-            route_name.concat(".create"),
-            title,
-            true,
-            () => import("@/views/crud/Create.vue")
-        )
-    );
-
-    return [
-        {
-            path: path_name,
-            name: route_name.name,
-            component: () => import("@/views/crud/Index.vue"),
-            children,
+    return {
+        path: sub_path_name,
+        name: sub_route_name,
+        meta: {
+            label: sub.title,
+            index: false,
         },
-    ];
+        component: () => import("@/views/crud/Index.vue")
+    }
+
+};
+
+const createCrud = (path_name, route_name, label) => {
+
+    return {
+        path: path_name,
+        name: route_name,
+        component: Index,
+        redirect: { name: route_name.replace('index', 'list') },
+        children: [
+            {
+                path: "",
+                name: route_name.replace('index', 'list'),
+                component: () => import("@/views/crud/List.vue"),
+                meta: {
+                    label,
+                    index: true,
+                },
+                children: [
+                    {
+                        path: ":id/excluir",
+                        name: route_name.replace(".index", ".destroy"),
+                        component: () => import("@/views/crud/Delete.vue"),
+                    },
+                ],
+            },
+            {
+                path: ":id/editar",
+                name: route_name.replace(".index", ".edit"),
+                component: () => import("@/views/crud/Edit.vue"),
+            },
+            {
+                path: ":id/visualizar",
+                name: route_name.replace(".index", ".view"),
+                component: () => import("@/views/crud/View.vue"),
+            },
+            {
+                path: "cadastar",
+                name: route_name.replace(".index", ".create"),
+                component: () => import("@/views/crud/Create.vue"),
+            }
+        ],
+    }
 };
 
 const cretaeRoutes = (data) => {
@@ -112,34 +83,32 @@ const cretaeRoutes = (data) => {
         const { items } = menus;
         if (items) {
             items.map((item) => {
-                Object.values(item).map((menu) => {
+                Object.values(item).map((menu, index) => {
                     const { submenu } = menu;
+                    let path_name = menu.path_name;
+                    let route_name = menu.name;
                     if (submenu) {
-                        const submenus = [];
-                        Object.values(submenu).map((sub) => {
-                            submenus.push(
-                                createSubRoute(sub, () =>
-                                    import("@/views/crud/List.vue")
-                                )
-                            );
-                        });
-                        routers.push(
-                            createMenuRoute(
-                                menu,
-                                null,
-                                () => import("@/views/crud/Index.vue"),
-                                submenus
-                            )
-                        );
+                        const childrens = [];
+                        map(submenu, sub => {
+                            if (sub.hasOwnProperty("crud") && sub.crud) {
+                                childrens.push(createCrud(sub.path_name, sub.name, sub.title));
+                            } else {
+                                childrens.push(createSubRoute(sub))
+                            }
+                        })
+                        routers.push(createMenuRoute(path_name, path_name.concat('.').concat(index).concat('.index'), childrens))
                     } else {
-                        routers.push(
-                            createMenuRoute(
-                                menu,
-                                menus,
-                                () => import("@/views/crud/List.vue"),
-                                []
-                            )
-                        );
+                        if (path_name.includes('/')) {
+                            path_name = menus.path_name.concat(path_name);
+                        } else {
+                            path_name = menus.path_name.concat('/').concat(path_name);
+                        }
+                        if (menu.hasOwnProperty("crud") && menu.crud) {                           
+                            routers.push(createCrud(path_name, route_name, menu.title));
+                        } else {
+                            routers.push(createMenuRoute(path_name, route_name));
+                        }
+
                     }
                 });
             });

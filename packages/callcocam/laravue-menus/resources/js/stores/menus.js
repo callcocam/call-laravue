@@ -17,6 +17,9 @@ export const useManagerMemuStore = defineStore('menus', {
         setIsSidebarExpanded(isSidebarExpanded) {
             this.isSidebarExpanded = isSidebarExpanded
         },
+        setHiddeSidebarExpanded() {
+            this.setIsSidebar(false)
+        },
         setCurrentMenu(currentMenu) {
             this.currentMenu = currentMenu
         },
@@ -27,9 +30,6 @@ export const useManagerMemuStore = defineStore('menus', {
             this.isSidebar = isSidebar
             this.isSidebarExpanded = isSidebar
             this.expandSidaber()
-        },
-        setIsSidebarExpanded(isSidebarExpanded) {
-            this.isSidebarExpanded = isSidebarExpanded
         },
         setMenuItems(items) {
             this.items = items
@@ -44,8 +44,8 @@ export const useManagerMemuStore = defineStore('menus', {
                 if (this.isSidebar) {
                     document.body.classList.add("is-sidebar-open");
                 } else {
-                    this.setMenuItems([])
-                    this.setCurrentMenu(null)
+                    // this.setMenuItems([])
+                    // this.setCurrentMenu(null)
                     document.body.classList.remove("is-sidebar-open");
                 }
             }, 200);

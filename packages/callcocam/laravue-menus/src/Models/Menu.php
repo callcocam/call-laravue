@@ -7,16 +7,11 @@
 
 namespace SIGA\Menus\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUlids as ConcernsHasUlids;
+use Illuminate\Database\Eloquent\Factories\HasFactory; 
+use SIGA\Models\AbstractModel;
 
-class Menu extends Model
+class Menu extends AbstractModel
 {
-    use HasFactory, ConcernsHasUlids;
-    
-    public $incrementing = false;
-
-    protected $keyType = "string";
+    use HasFactory;
 
 }

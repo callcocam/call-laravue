@@ -4,16 +4,16 @@
 * User: callcocam@gmail.com, contato@sigasmart.com.br
 * https://www.sigasmart.com.br
 */
-namespace SIGA\Makes\Models;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use SIGA\Models\AbstractModel;
 
-class Make extends AbstractModel
+class Category extends AbstractModel
 {
     use HasFactory;
-
-     /**
+    
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -21,15 +21,6 @@ class Make extends AbstractModel
     protected $guarded = [
         'id'
     ];
-    
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d',
-        'updated_at' => 'datetime:Y-m-d',
-    ];
+
 
 }

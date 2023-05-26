@@ -22,6 +22,8 @@
             <div class="app-preloader-inner relative inline-block h-48 w-48"></div>
         </div>
     </div>
+    
+    <div id="modals"></div>
 </body>
 
 </html>

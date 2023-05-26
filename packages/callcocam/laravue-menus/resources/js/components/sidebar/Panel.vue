@@ -28,7 +28,7 @@
                                                 type="button" @click="() => setActive(i)"
                                                 :class="activeClass(i, 'text-slate-800 font-semibold dark:text-navy-50', 'text-slate-600 dark:text-navy-200')"
                                                 class="w-full flex items-center justify-between py-2 text-xs+ tracking-wide  outline-none transition-[color,padding-left] duration-300 ease-in-out hover:text-slate-800  dark:hover:text-navy-50">
-                                                <span> {{ item.title }}</span>
+                                                <span> {{ item.title }} </span>
                                                 <m-icon name="fa-chevron-right"
                                                     :class="activeClass(i, 'h-4 w-4 text-slate-400 transition-transform ease-in-out rotate-90', 'h-4 w-4 text-slate-400 transition-transform ease-in-out')" />
                                             </button>
@@ -80,7 +80,7 @@ const router = useRouter()
 
 const { hasRoute } = router
 
-const isSidebarExpanded = useManagerThemeStore()
+const isSidebarExpanded = useManagerMemuStore()
 
 const expanded = ref()
 

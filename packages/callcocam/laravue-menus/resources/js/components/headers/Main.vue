@@ -5,7 +5,7 @@
             <!-- Header Items -->
             <div class="flex w-full items-center justify-between">
                 <!-- Left: Sidebar Toggle Button -->
-                <div class="h-7 w-7">
+                <div class="h-7 w-7" v-if="getCurrentMenu">
                     <button @click="toogleSidaber()" :class="isSidebarExpanded ? 'active' : ''"
                         class="menu-toggle ml-0.5 flex h-7 w-7 flex-col justify-center space-y-1.5 text-primary outline-none focus:outline-none dark:text-accent-light/80">
                         <span></span>
@@ -25,8 +25,9 @@
                         </svg>
                     </button>
                 </div>
+                
                 <!-- Dark Mode Toggle -->
-                <button type="button" @click="toogle()"
+                <button  type="button" @click="toogle()"
                     class="btn h-8 w-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
                     <svg v-if="!isDarkModeEnabled" class="h-6 w-6 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
                         <path
@@ -51,13 +52,14 @@ import { useManagerThemeStore } from '@laravue-menus/stores/theme';
 const menu = useManagerMemuStore()
 
 const isSidebarExpanded = computed(() => useManagerMemuStore().isSidebarExpanded)
+const getCurrentMenu = computed(() => useManagerMemuStore().getCurrentMenu)
 
 const isDarkModeEnabled = computed(() => useManagerThemeStore().isDarkModeEnabled)
 const toogleSidaber = () => {
     menu.toogleSidaber()
 }
 onMounted(() => {
-    if (isDarkModeEnabled.value) {
+    if (isDarkModeEnabled) {
         document.documentElement.classList.add("dark")
     }
 })

@@ -34,9 +34,9 @@
                     <td class=" px-4 py-3 sm:px-5"> <input type="checkbox"> </td>
                     <td class=" px-4 py-3 sm:px-5">{{ item.name }}</td>
                     <td class=" px-4 py-3 sm:px-5">{{ item.content }}</td>
-                    <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                    <td class="whitespace-nowrap px-4 py-3 sm:px-5"> 
                         <template v-if="hasRoute(hasEdit())">
-                        <router-link :to="{ name: hasEdit(), params: { id: item.id } }">
+                            <router-link :to="{ name: hasEdit(), params: { id: item.id } }">
                             Edit
                         </router-link>
                         </template>
@@ -59,9 +59,9 @@ const { hasRoute } = router
 
 const makes = ref({})
 
-const hasCreate = () => route.name.replace('index', 'create')
-const hasEdit = () => route.name.replace('index', 'edit')
-const hasApiList = () => route.name.replace('.index', '').replace('.', '/')
+const hasCreate = () => route.name.replace('list', 'create').replace('index', 'create')
+const hasEdit = () => route.name.replace('index', 'edit').replace('list', 'edit')
+const hasApiList = () => route.name.replace('.index', '').replace('.list', '').replace('.', '/')
 
 onMounted(async () => {
     const { data } = await useApi().get(hasApiList())

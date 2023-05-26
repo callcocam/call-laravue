@@ -8,18 +8,12 @@
 
 namespace SIGA\Menus\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUlids as ConcernsHasUlids;
+use Illuminate\Database\Eloquent\Factories\HasFactory; 
+use SIGA\Models\AbstractModel;
 
-class SubMenu extends Model
+class SubMenu extends AbstractModel
 {
-    use HasFactory, ConcernsHasUlids;
-
-    public $incrementing = false;
-
-    protected $keyType = "string";
-
+    use HasFactory; 
 
     public function menus()
     {

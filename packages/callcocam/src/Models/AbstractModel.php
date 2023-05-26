@@ -1,12 +1,9 @@
 <?php
-
 /**
- * Created by PhpStorm.
- * User: caltj
- * Date: 22/03/2019
- * Time: 21:27
- */
-
+* Created by Claudio Campos.
+* User: callcocam@gmail.com, contato@sigasmart.com.br
+* https://www.sigasmart.com.br
+*/
 namespace SIGA\Models;
 
 use SIGA\Models\Tenant as ModelsTenant;

@@ -18,18 +18,20 @@
 </template>
 <script>
 import { useManagerLoadingStore } from "@/stores/loading";
+import { useManagerMemuStore } from '@laravue-menus/stores/menus';
 import { useRouter } from "vue-router";
 export default {
     setup() {
         const router = useRouter()
         router.beforeEach((to, from, next) => {
             useManagerLoadingStore().setLoading(true)
-            console.log('beforeEach')
+            // console.log('beforeEach')
             next()
         })
         router.afterEach((to, from, failure) => {
             useManagerLoadingStore().setLoading(false)
-            console.log('afterEach')
+            useManagerMemuStore().setHiddeSidebarExpanded()
+
         })
         return {}
     }

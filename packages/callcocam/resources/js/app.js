@@ -29,17 +29,12 @@ app.component('v-icon', OhVueIcon)
 
 import Form from '@form-manager'
 
-import "@file-manager/css/app.css";
-import FileManager from '@file-manager'
-import FileManagerInput from './components/FileManagerInput.vue'
-
 import Menu from '@laravue-menus';
 
 import Make from '@laravue-makes';
 
 import Siga from '@/components';
 
-app.component('FileManagerInput', FileManagerInput)
 
 
 import { useApi } from "./api/useAPI";
@@ -55,8 +50,13 @@ app.use(i18nPlugin, {
 
 
 import baseClasses from './components/classes';
-import { cretaeRoutes } from './routers';
 
+
+import "@file-manager/css/app.css";
+import FileManager from '@file-manager'
+import FileManagerInput from './components/FileManagerInput.vue'
+
+app.component('FileManagerInput', FileManagerInput)
 
 app.use(Form, {
     uploader: useApi(),
@@ -86,6 +86,8 @@ app.directive('InfiniteScroll', vInfiniteScroll)
 app.directive("expanded-item", expandedItem);
 app.directive('popper', popper)
 app.directive("tooltip", tooltip);
+
+import { cretaeRoutes } from './routers';
 
 useApi().get("load/menus").then(resp => {
 
