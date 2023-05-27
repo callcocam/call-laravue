@@ -67,15 +67,22 @@ const props = defineProps({
             </ul>
         </div>
         <div class="flex items-center justify-end space-x-2">
+            <template v-if="hasRoute(hasList())">
+                <router-link
+                    class="btn min-w-[7rem] border border-slate-300 font-medium text-slate-700 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-100 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90"
+                    :to="{ name: hasList() }"> Voltar para a lista</router-link>
+            </template>
             <slot />
         </div>
     </div>
 </template>
 <script setup>
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 const app_name = ref(document.head.querySelector('title').text)
+
+const router = useRouter()
 
 const route = useRoute();
 
@@ -94,5 +101,13 @@ pages.push({
     index,
     label,
 })
+
+const { hasRoute } = router
+
+const hasList = () => {
+
+    if (route.name.includes('list')) return false
+    return route.name.replace('create', 'index').replace('edit', 'index').replace('destroy', 'index')
+}
 
 </script>

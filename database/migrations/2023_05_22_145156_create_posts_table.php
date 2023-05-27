@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUlid('tenant_id')->nullable()->constrained('tenants')->cascadeOnDelete();
             $table->foreignUlid('user_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->string('name');
+            $table->string('slug');
             $table->foreignUlid('file_manager_id')->nullable()->constrained('file_managers')->cascadeOnDelete();
             $table->text('content');
             $table->enum('status', ['draft','published'])->default('published');

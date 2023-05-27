@@ -13,7 +13,7 @@ class {{ controllerName }} extends AbstractController
 {
      protected $model = \{{ modelName }}::class;
      
-    protected $resourse = \{{ resourceName }}::class;
+    protected $resourse = \{{ resourceName }}Resource::class;
     
     //
 }

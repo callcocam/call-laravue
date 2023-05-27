@@ -3,28 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUlids as ConcernsHasUlids;
 use SIGA\FileManager\Models\FileManager;
+use SIGA\Models\AbstractModel;
 
-class Post extends Model
+class Post extends AbstractModel
 {
-    use HasFactory, ConcernsHasUlids;
+    use HasFactory;
     
-    
-    public $incrementing = false;
-
-    protected $keyType = "string";
-
-    /**
-     * The attributes that should be cast.
+     /**
+     * The attributes that are mass assignable.
      *
-     * @var array<string, string>
+     * @var array
      */
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d'
+    protected $guarded = [
+        'id'
     ];
 
+    
     public $with = ['filemanager'];
 
     public function fileManager()

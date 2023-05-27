@@ -40,13 +40,39 @@ class Field extends Fluent
     }
 
 
+    public static function radio($label, $name = null, $options=[])
+    {
+        $field = new static($label, $name);
+
+        $props = $field->props;
+        
+        $props['options']  = $options;
+
+        $field->offsetSet('props', array_merge($props, ['type' => 'radio']));
+
+        return $field;
+    }
+
     public static function date($label, $name = null)
     {
         $field = new static($label, $name);
 
         $props = $field->props;
 
+
         $field->offsetSet('props', array_merge($props, ['type' => 'date']));
+
+        return $field;
+    }
+
+
+    public static function textarea($label, $name = null)
+    {
+        $field = new static($label, $name);
+
+        $props = $field->props;
+
+        $field->offsetSet('props', array_merge($props, ['type' => 'textarea']));
 
         return $field;
     }

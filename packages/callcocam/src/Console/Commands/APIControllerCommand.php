@@ -101,6 +101,8 @@ class APIControllerCommand extends MakeCommad
 
         $this->modelExist($modelName, $modelLastName);
         
+        $this->generateFormRequests($modelName);
+        
         $resourceNameArr  = explode('\\', $resourceName);
         $resourceLastName = Arr::last($resourceNameArr);
 
@@ -175,5 +177,22 @@ class APIControllerCommand extends MakeCommad
             $this->info("\n⚡ <comment>" . $filename . '</comment> foi criado com sucesso em [<comment>App/' . $savedAt . '</comment>].');
             $this->info("\n⚡ou pode ser acessada via: <comment>http://" . request()->getHost() . "/api/" . $path . "</comment>\n");
         }
+    }
+
+    protected function generateFormRequests($modelClass, $storeRequestClass="", $updateRequestClass="")
+    {
+        $storeRequestClass = 'Store'.class_basename($modelClass).'Request';
+
+        $this->call('make:request', [
+            'name' => $storeRequestClass,
+        ]);
+
+        $updateRequestClass = 'Update'.class_basename($modelClass).'Request';
+
+        $this->call('make:request', [
+            'name' => $updateRequestClass,
+        ]);
+
+        return [$storeRequestClass, $updateRequestClass];
     }
 }

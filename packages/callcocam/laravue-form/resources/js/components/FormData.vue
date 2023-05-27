@@ -5,12 +5,14 @@
                 <template v-if="slot == 'left'">
                     <div :class="span" class="col-span-12">
                         <div class="card space-y-4 p-4">
-                            <template v-if="children.props.hasOwnProperty('name')">
-                                <CFormInput v-bind="children.props" :value="form[children.props.name]"
-                                    v-model="form[children.props.name]" />
-                            </template>
-                            <template v-else>
-                                <CFormInput v-bind="children.props" />
+                            <template v-for="(children, index) in childrens" :key="index">
+                                <template v-if="children.props.hasOwnProperty('name')">
+                                    <CFormInput v-bind="children.props" :value="form[children.props.name]"
+                                        v-model="form[children.props.name]" />
+                                </template>
+                                <template v-else>
+                                    <CFormInput v-bind="children.props" />
+                                </template>
                             </template>
                         </div>
                     </div>
@@ -242,7 +244,13 @@ export default {
                     this.$emit('success', data)
                 }
                 else {
-                    const { data } = await this.$form.post(this.endpoint, this.formData)
+                    if (this.endpoint) {
+                        endpoint = this.endpoint.concat('/').concat(params.id)
+                    }
+                    else {
+                        endpoint = name.replace('.edit', '').replace('.create', '')
+                    }
+                    const { data } = await this.$form.post(endpoint, this.formData)
                     this.$emit('success', data)
                 }
 

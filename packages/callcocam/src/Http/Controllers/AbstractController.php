@@ -9,6 +9,7 @@
 namespace SIGA\Http\Controllers;
 
 use App\Http\Controllers\Controller as BaseController;
+use App\Resources\Make\PostResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use PDOException;
@@ -59,7 +60,7 @@ class AbstractController extends BaseController
         if ($this->model) {
             if ($model = app($this->model)) {
                 $data = $request->input();
-                // $request->validate($this->rules($model, $request));
+                $request->validate($this->rules($request, $model));
                 try {
                     $model = $model->create($data);
                     if ($model) {
@@ -108,7 +109,7 @@ class AbstractController extends BaseController
         if ($this->model) {
             if ($model = app($this->model)::find($id)) {
                 try {
-                    $data = app($this->resourse)->init('Makes', 'makes')->icon('fa-layer-group');
+                    $data = PostResource::make('Posts', 'makes')->icon('fa-layer-group');
                     $data['data'] = $model->toArray();
                     return  $data;
                 } catch (PDOException $PDOError) {
@@ -131,7 +132,7 @@ class AbstractController extends BaseController
         if ($this->model) {
             if ($model = app($this->model)::find($id)) {
                 $data = $request->input();
-                // $request->validate($this->rules($model, $request));
+                $request->validate($this->rules($request, $model));
                 try {
                     $model->update($data);
                     if ($model) {
@@ -171,5 +172,11 @@ class AbstractController extends BaseController
         $params[$path] = 'id';
 
         Route::resource($path, static::class)->parameters($params);
+    }
+
+
+    protected function rules(Request $request, $model)
+    {
+        return [];
     }
 }

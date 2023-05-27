@@ -7,6 +7,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use SIGA\Http\Controllers\AbstractController;
 
 class CategoryController extends AbstractController
@@ -15,5 +16,11 @@ class CategoryController extends AbstractController
      
     protected $resourse = \App\Resources\Make\CategoryResource::class;
     
-    //
+   
+    protected function rules(Request $request, $model)
+    {
+        return [
+            'name'=>['required']
+        ];
+    }
 }
