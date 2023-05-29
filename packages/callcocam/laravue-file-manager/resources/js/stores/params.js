@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useManagerParamsStore = defineStore('params', () => {
 
-    const params = ref({type:'file'})
+    const params = ref({ type: 'file' })
 
     const setParams = (data) => {
         params.value = Object.assign({}, params.value, data)
@@ -13,7 +13,7 @@ export const useManagerParamsStore = defineStore('params', () => {
 
     const resetParam = (data) => { delete params.value[data] }
 
-    const resetParams = (data) => params.value = data
+    const resetParams = (data) => params.value = Object.assign({}, { type: 'file' }, data)
 
     return { params, hasParam, setParams, resetParams, resetParam }
 })

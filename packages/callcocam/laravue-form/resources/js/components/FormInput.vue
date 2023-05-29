@@ -120,6 +120,10 @@ export default {
             type: String,
             default: 'default'
         },
+        models: {
+            type: [String,Object, Array, Boolean],
+            default: false
+        },
     },
     model: {
         prop: 'formValue',

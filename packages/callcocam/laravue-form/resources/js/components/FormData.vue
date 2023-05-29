@@ -7,8 +7,9 @@
                         <div class="card space-y-4 p-4">
                             <template v-for="(children, index) in childrens" :key="index">
                                 <template v-if="children.props.hasOwnProperty('name')">
-                                    <CFormInput v-bind="children.props" :value="form[children.props.name]"
-                                        v-model="form[children.props.name]" />
+                                    <CFormInput v-bind="children.props"
+                                        :models="children.props.hasOwnProperty('model') ? form[children.props.model] : null"
+                                        :value="form[children.props.name]" v-model="form[children.props.name]" />
                                 </template>
                                 <template v-else>
                                     <CFormInput v-bind="children.props" />
@@ -22,8 +23,9 @@
                         <div class="card space-y-4 p-4">
                             <template v-for="(children, index) in childrens" :key="index">
                                 <template v-if="children.props.hasOwnProperty('name')">
-                                    <CFormInput v-bind="children.props" :value="form[children.props.name]"
-                                        v-model="form[children.props.name]" />
+                                    <CFormInput v-bind="children.props"
+                                        :models="children.props.hasOwnProperty('model') ? form[children.props.model] : null"
+                                        :value="form[children.props.name]" v-model="form[children.props.name]" />
                                 </template>
                                 <template v-else>
                                     <CFormInput v-bind="children.props" />
@@ -49,8 +51,9 @@
                             <div class="gap-4 p-4 sm:p-5 grid grid-cols-12">
                                 <template v-for="(children, index) in childrens" :key="index">
                                     <template v-if="children.props.hasOwnProperty('name')">
-                                        <CFormInput v-bind="children.props" :value="form[children.props.name]"
-                                            v-model="form[children.props.name]" />
+                                        <CFormInput v-bind="children.props"
+                                            :models="children.props.hasOwnProperty('model') ? form[children.props.model] : null"
+                                            :value="form[children.props.name]" v-model="form[children.props.name]" />
                                     </template>
                                     <template v-else>
                                         <CFormInput v-bind="children.props" />
@@ -75,7 +78,7 @@ export default {
         event: 'input'
     },
     props: {
-        name: {
+        label: {
             type: [String, Boolean],
             default: false
         },
@@ -203,8 +206,11 @@ export default {
             } else {
                 this.formSchema = Object.assign({}, this.schema)
             }
-
-            this.applyInitialValues(Object.assign(data, this.formValue))
+            if (data) {
+                this.applyInitialValues(Object.assign(data, this.formValue))
+            } else {
+                this.applyInitialValues(this.formValue)
+            }
         },
         applyInitialValues(data) {
             this.formData = new FormData()

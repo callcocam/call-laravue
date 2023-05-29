@@ -3,14 +3,23 @@ import { createRouter, createWebHistory } from "vue-router";
 import App from "@/views/layouts/App.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import Index from "@/views/crud/Index.vue";
-import { map } from "lodash";
+import { get, map } from "lodash";
 
+const components = {
+    icones: () => import('@/views/Icones.vue')
+}
 
-const createMenuRoute = (path_name, route_name, children = []) => {
+const createMenuRoute = (path_name, route_name, children = [], component = null) => {
+    if (component) {
+        if (components.hasOwnProperty(component))
+            component = components[component]
+    } else {
+        component = () => import("@/views/crud/Index.vue")
+    }
     return {
         path: path_name,
         name: route_name,
-        component: () => import("@/views/crud/Index.vue"),
+        component,
         children
     }
 };
@@ -96,17 +105,17 @@ const cretaeRoutes = (data) => {
                                 childrens.push(createSubRoute(sub))
                             }
                         })
-                        routers.push(createMenuRoute(path_name, path_name.concat('.').concat(index).concat('.index'), childrens))
+                        routers.push(createMenuRoute(path_name, path_name.concat('.').concat(index).concat('.index'), childrens, menu.component))
                     } else {
                         if (path_name.includes('/')) {
                             path_name = menus.path_name.concat(path_name);
                         } else {
                             path_name = menus.path_name.concat('/').concat(path_name);
                         }
-                        if (menu.hasOwnProperty("crud") && menu.crud) {                           
+                        if (menu.hasOwnProperty("crud") && menu.crud) {
                             routers.push(createCrud(path_name, route_name, menu.title));
                         } else {
-                            routers.push(createMenuRoute(path_name, route_name));
+                            routers.push(createMenuRoute(path_name, route_name, [], menu.component));
                         }
 
                     }
@@ -124,6 +133,14 @@ const cretaeRoutes = (data) => {
             children: [
                 { path: "dashboard", name: "dashboard", component: Dashboard },
                 ...routers,
+                {
+                    path: "file-manager",
+                    name: "file-manager",
+                    component: () => import("@/views/FileManager.vue"),
+                    meta:{
+                        fileManager:true
+                    }
+                }, 
                 {
                     path: "/:pathMatch(.*)*",
                     name: "NotFound",

@@ -53,6 +53,30 @@ class Field extends Fluent
         return $field;
     }
 
+    public static function file($label, $name = null)
+    {
+        $field = new static($label, $name);
+
+        $props = $field->props;
+
+
+        $field->offsetSet('props', array_merge($props, ['type' => 'file']));
+
+        return $field;
+    }
+
+    public static function filemanager($label, $name = null)
+    {
+        $field = new static($label, $name);
+
+        $props = $field->props;
+
+
+        $field->offsetSet('props', array_merge($props, ['type' => 'file-manager']));
+
+        return $field;
+    }
+
     public static function date($label, $name = null)
     {
         $field = new static($label, $name);
@@ -65,6 +89,28 @@ class Field extends Fluent
         return $field;
     }
 
+
+    public static function quill($label, $name = null)
+    {
+        $field = new static($label, $name);
+
+        $props = $field->props;
+
+        $field->offsetSet('props', array_merge($props, ['type' => 'quill']));
+
+        return $field;
+    }
+
+    public static function tinymce($label, $name = null)
+    {
+        $field = new static($label, $name);
+
+        $props = $field->props;
+
+        $field->offsetSet('props', array_merge($props, ['type' => 'tinymce']));
+
+        return $field;
+    }
 
     public static function textarea($label, $name = null)
     {

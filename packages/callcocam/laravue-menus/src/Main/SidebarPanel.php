@@ -1545,6 +1545,17 @@ class SidebarPanel
                         'name' => 'categories.index',
                         'crud'=>true
                     ],
+                    'operacional_icones' => [
+                        'title' => 'Icones',
+                        'route_name' => [
+                            'name' => 'icones.index'
+                        ],
+                        'component' => 'icones',
+                        'path_name' => '/icones',
+                        'key' => 'operacional/icones',
+                        'name' => 'icones.index',
+                        'crud'=>false
+                    ]
                 ],
             ]
         ];

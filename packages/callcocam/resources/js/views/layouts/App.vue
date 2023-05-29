@@ -1,19 +1,9 @@
 <template>
-    <x-preloader />
-    <m-main />
-    <m-headers-main />
-    <!-- <x-header />
-    <x-searchbar />
-    <x-right /> -->
-    <!-- Main Content Wrapper -->
-    <main class="main-content w-full px-[var(--margin-x)] pb-8">
-
+    <x-preloader/>
+    <m-main  v-if="!$route.meta.hasOwnProperty('fileManager')"/>
+    <m-headers-main  v-if="!$route.meta.hasOwnProperty('fileManager')"/>
+    <main class="main-content w-full pb-8" :class="{'px-[var(--margin-x)]':!$route.meta.hasOwnProperty('fileManager')}">
         <router-view :key="$route.fullPath" />
-        <!-- <router-view v-slot="{ Component }">
-            <transition name="fade">
-                <component :is="Component" />
-            </transition>
-        </router-view> -->
     </main>
 </template>
 <script>

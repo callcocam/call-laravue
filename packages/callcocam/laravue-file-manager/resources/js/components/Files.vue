@@ -3,7 +3,7 @@
         <div class="grid grid-cols-6 gap-2 p-3 h-[450px] overflow-y-auto content-start" v-infinite-scroll="[onLoadMore, { 'distance': 10 }]">
             <template v-if="files.length">
                 <template v-for="(file, index) in files" :key="file.id">
-                    <f-file :file="file" :context="context" />
+                    <f-file :file="file" :context="context" @selectedFile="$emit('selectedFile', $event)"/>
                 </template>
             </template>
         </div>

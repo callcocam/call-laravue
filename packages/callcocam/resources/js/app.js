@@ -3,6 +3,8 @@ import moment from 'moment'; // Importe a biblioteca Moment.js
 moment.locale('pt-br');
 window.moment = moment
 window.moment.locale('pt-br')
+ 
+ 
 
 import { createApp } from "vue";
 
@@ -58,6 +60,12 @@ import FileManagerInput from './components/FileManagerInput.vue'
 
 app.component('FileManagerInput', FileManagerInput)
 
+import QuillEditorInput from './components/QuillEditorInput.vue'
+app.component('QuillEditorInput', QuillEditorInput)
+
+import TinymceInput from './components/TinymceInput.vue'
+app.component('TinymceInput', TinymceInput)
+
 app.use(Form, {
     uploader: useApi(),
     service: useApi(),
@@ -66,6 +74,14 @@ app.use(Form, {
         'file-manager': {
             classification: 'file-manager',
             component: 'FileManagerInput'
+        },
+        'quill': {
+            classification: 'quill',
+            component: 'QuillEditorInput'
+        },
+        'tinymce': {
+            classification: 'tinymce',
+            component: 'TinymceInput'
         }
     }
 });

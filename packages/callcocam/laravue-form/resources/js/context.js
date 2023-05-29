@@ -18,6 +18,7 @@ export default {
             ignored: has(this.$options.props, 'ignored'),
             labelPosition: this.logicalLabelPosition,
             helpPosition: this.logicalHelpPosition,
+            models: this.models,
             label: this.label,
             help: this.help,
             name: this.nameOrFallback,

@@ -1,17 +1,13 @@
 <template>
     <TransitionRoot appear :show="showOpen" as="template">
-        <Dialog as="div" @close="closeModal" class="relative z-50">
-            <TransitionChild as="template" enter="duration-300 ease-out" enter-from="opacity-0" enter-to="opacity-100"
-                leave="duration-200 ease-in" leave-from="opacity-100" leave-to="opacity-0">
-                <div class="fixed inset-0 bg-black bg-opacity-25" />
-            </TransitionChild>
+        <div @close="closeModal" class="relative z-50"> 
             <div class="fixed inset-0 overflow-hidden ">
                 <div class="flex min-h-full items-center justify-center">
                     <TransitionChild as="template" enter="duration-300 ease-out" enter-from="opacity-0 scale-95"
                         enter-to="opacity-100 scale-100" leave="duration-200 ease-in" leave-from="opacity-100 scale-100"
                         leave-to="opacity-0 scale-95">
-                        <DialogPanel
-                            class="w-full flex md:max-w-5xl transform overflow-hidden rounded-md bg-white shadow-xl transition-all dark:bg-navy-700 fm-has-min-sidebar relative"
+                        <div
+                            class="w-full flex   transform overflow-hidden rounded-md bg-white shadow-xl transition-all dark:bg-navy-700 fm-has-min-sidebar relative"
                             :class="{ 'fm-is-sidebar-open': isSidebarExpanded }">
                             <div class="sidebar">
                                 <f-sidebar-main v-if="user" :context="context" />
@@ -30,16 +26,16 @@
                                         </h3>
                                     </div>
                                     <div class=" w-full content-start">
-                                        <f-files :context="context" @selectedFile="$emit('selectedFile', $event)" />
+                                        <f-files :context="context" @close="closeModal" />
                                         <f-resume :context="context" />
                                     </div>
                                 </div>
                             </main>
-                        </DialogPanel>
+                        </div>
                     </TransitionChild>
                 </div>
             </div>
-        </Dialog>
+        </div>
     </TransitionRoot>
     <slot />
 </template>
@@ -102,7 +98,7 @@ export default {
         },
         isOpen: {
             type: Boolean,
-            default: false
+            default: true
         }
     },
     data() {
@@ -132,9 +128,9 @@ export default {
         selectedFile() {
             const selectedFile = useManagerFilesStore().selectedFile
 
-            // if (selectedFile.hasOwnProperty('url')) {
-            //     this.$emit('selectedFile', selectedFile)
-            // }
+            if (selectedFile.hasOwnProperty('url')) {
+                this.$emit('selectedFile', selectedFile)
+            }
             return selectedFile
         }
     },

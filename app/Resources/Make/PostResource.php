@@ -24,9 +24,10 @@ class PostResource extends AbstractResources
             // Slot::make([])->span('4')->slot('left'),
             Slot::make([
                 Field::make('Name'),
-                Field::textarea('Conteudo', 'content'),
+                Field::tinymce('Conteudo', 'content'),
             ])->span('8'),
             Slot::blank()
+                ->add(Field::filemanager('File', 'file_manager_id')->model('filemanager'))
                 ->add(Field::date('Data de criação', 'created_at'))
                 ->add(Field::date('Data de atualização', 'updated_at'))
                 ->add(Field::radio('Status')->options([

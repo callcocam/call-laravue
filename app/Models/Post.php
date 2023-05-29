@@ -24,6 +24,6 @@ class Post extends AbstractModel
 
     public function fileManager()
     {
-        return $this->belongsTo(FileManager::class);
+        return $this->belongsTo(FileManager::class)->with('folder');
     }
 }

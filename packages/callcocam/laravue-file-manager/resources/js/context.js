@@ -1,9 +1,11 @@
+import { token } from "./helpers"
 import Services from "./services"
 
 export default {
     context() {
         return defineModel.call(this, {
             blurHandler: blurHandler.bind(this),
+            id: token(13),
             http: this.$fm.getHttp(),
             services: new Services(this.$fm.getHttp()),
             uploadUrl: this.mergedUploadUrl,

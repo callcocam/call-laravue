@@ -14,6 +14,13 @@ namespace SIGA\Form\Resources\Columns\Traits;
 trait WithDecorator
 {
 
+    public function model($model)
+    {
+        $this->offsetSet('props', array_merge($this->props, ['model' => $model]));
+
+        return $this;
+    }
+
     public function span($span)
     {
         $this->offsetSet('span',  array_merge($this->get('span', []), [sprintf('md:col-span-%s', $span)]));
