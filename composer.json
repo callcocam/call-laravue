@@ -28,6 +28,7 @@
         "files": [
             "packages/callcocam/helpers.php",
             "packages/callcocam/laravue-menus/helpers.php",
+            "packages/callcocam/laravue-table/helpers.php",
             "packages/callcocam/laravue-makes/helpers.php"
         ],
         "psr-4": {
@@ -36,6 +37,7 @@
             "SIGA\\Form\\": "packages/callcocam/laravue-form/src/",
             "SIGA\\Menus\\": "packages/callcocam/laravue-menus/src/",
             "SIGA\\Makes\\": "packages/callcocam/laravue-makes/src/",
+            "SIGA\\Table\\": "packages/callcocam/laravue-table/src/",
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"

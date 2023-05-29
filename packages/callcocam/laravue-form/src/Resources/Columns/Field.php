@@ -53,6 +53,19 @@ class Field extends Fluent
         return $field;
     }
 
+    public static function select($label, $name = null, $options=[])
+    {
+        $field = new static($label, $name);
+
+        $props = $field->props;
+        
+        $props['options']  = $options;
+
+        $field->offsetSet('props', array_merge($props, ['type' => 'select']));
+
+        return $field;
+    }
+
     public static function file($label, $name = null)
     {
         $field = new static($label, $name);
