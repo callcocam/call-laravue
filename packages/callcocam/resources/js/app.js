@@ -60,11 +60,11 @@ import FileManagerInput from './components/FileManagerInput.vue'
 
 app.component('FileManagerInput', FileManagerInput)
 
-import QuillEditorInput from './components/QuillEditorInput.vue'
-app.component('QuillEditorInput', QuillEditorInput)
+// import QuillEditorInput from './components/QuillEditorInput.vue'
+// app.component('QuillEditorInput', QuillEditorInput)
 
-import TinymceInput from './components/TinymceInput.vue'
-app.component('TinymceInput', TinymceInput)
+// import TinymceInput from './components/TinymceInput.vue'
+// app.component('TinymceInput', TinymceInput)
 
 app.use(Form, {
     uploader: useApi(),
@@ -75,14 +75,14 @@ app.use(Form, {
             classification: 'file-manager',
             component: 'FileManagerInput'
         },
-        'quill': {
-            classification: 'quill',
-            component: 'QuillEditorInput'
-        },
-        'tinymce': {
-            classification: 'tinymce',
-            component: 'TinymceInput'
-        }
+        // 'quill': {
+        //     classification: 'quill',
+        //     component: 'QuillEditorInput'
+        // },
+        // 'tinymce': {
+        //     classification: 'tinymce',
+        //     component: 'TinymceInput'
+        // }
     }
 });
 

@@ -45,6 +45,8 @@ export default {
   // === SELECT STYLE INPUTS
   select: add('select'),
 
+  editor: add('editor'),
+
   // === FILE TYPE
   file: add('file'),
   image: add('file'),

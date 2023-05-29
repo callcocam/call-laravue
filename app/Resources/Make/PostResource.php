@@ -24,7 +24,9 @@ class PostResource extends AbstractResources
             // Slot::make([])->span('4')->slot('left'),
             Slot::make([
                 Field::make('Name'),
-                Field::tinymce('Conteudo', 'content'),
+                Field::make('Categorias', 'category_id'),
+                Field::editor('Conteudo', 'content'),
+                // Field::tinymce('Conteudo', 'content'),
             ])->span('8'),
             Slot::blank()
                 ->add(Field::filemanager('File', 'file_manager_id')->model('filemanager'))

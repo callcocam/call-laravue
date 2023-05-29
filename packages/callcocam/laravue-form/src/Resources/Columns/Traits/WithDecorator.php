@@ -35,6 +35,13 @@ trait WithDecorator
         return $this;
     }
 
+    public function type($type)
+    {
+        $this->offsetSet('props', array_merge($this->props, ['type' => $type]));
+
+        return $this;
+    }
+
     public function options($options)
     {
         $this->offsetSet('props', array_merge($this->props, ['options' => $options]));

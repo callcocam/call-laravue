@@ -112,6 +112,17 @@ class Field extends Fluent
         return $field;
     }
 
+    public static function editor($label, $name = null)
+    {
+        $field = new static($label, $name);
+
+        $props = $field->props;
+
+        $field->offsetSet('props', array_merge($props, ['type' => 'editor']));
+
+        return $field;
+    }
+
     public static function textarea($label, $name = null)
     {
         $field = new static($label, $name);
