@@ -163,6 +163,7 @@ return [
         \SIGA\FileManager\Providers\FileManagerServiceProvider::class,
         \SIGA\Menus\Providers\MenuServiceProvider::class,
         \SIGA\Makes\Providers\MakeServiceProvider::class,
+        \SIGA\Table\Providers\TableServiceProvider::class,
         /*
          * Application Service Providers...
          */

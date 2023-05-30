@@ -58,7 +58,7 @@ class Form {
 
             let result = "C".concat(capitalize(name));
 
-            console.log(result);
+            // console.log(result);
 
             app.component(result, definition.default);
         });

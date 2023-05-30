@@ -7,14 +7,13 @@
  */
 
 namespace App\Resources\Make;
-
-use SIGA\Form\Resources\AbstractResources;
-use SIGA\Form\Resources\Columns\Field;
-use SIGA\Form\Resources\Slot;
+ 
+use SIGA\Resources\Columns\Field;
+use SIGA\Resources\Slot;
+use SIGA\Resources\AbstractResources;
 
 class CategoryResource extends AbstractResources
 {
-
 
     public function columns()
     {

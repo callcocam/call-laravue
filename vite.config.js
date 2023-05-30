@@ -44,6 +44,8 @@ export default defineConfig({
                 import.meta.url)),
             '@file-manager': fileURLToPath(new URL('./packages/callcocam/laravue-file-manager/resources/js',
                 import.meta.url)),
+            '@laravue-table': fileURLToPath(new URL('./packages/callcocam/laravue-table/resources/js',
+                import.meta.url)),
             '@form-manager': fileURLToPath(new URL('./packages/callcocam/laravue-form/resources/js',
                 import.meta.url)),
         },

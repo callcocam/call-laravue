@@ -4,7 +4,7 @@
 * User: callcocam@gmail.com, contato@sigasmart.com.br
 * https://www.sigasmart.com.br
 */
-namespace SIGA\Form\Resources;
+namespace SIGA\Resources;
 
 interface ResourcesInterface{
 

@@ -6,16 +6,17 @@
  * https://www.sigasmart.com.br
  */
 
-namespace SIGA\Form\Resources;
+namespace SIGA\Resources;
 
-use SIGA\Form\Resources\Columns\Fluent;
 
 use Illuminate\Support\Str;
-use SIGA\Form\Resources\Columns\Traits\WithDecorator;
+use SIGA\Filters\Ordering\ViewsOrder;
+use SIGA\Resources\Traits\WithDecorator;
+use SIGA\Resources\Traits\WithHidden;
 
 abstract class AbstractResources extends Fluent implements ResourcesInterface
 {
-    use WithDecorator;
+    use WithDecorator, WithHidden;
 
     public function __construct($label = null, $endpoint = null, $name = null)
     {
@@ -26,10 +27,22 @@ abstract class AbstractResources extends Fluent implements ResourcesInterface
 
     public function init($label, $endpoint, $name = null)
     {
+        $orderings = [];
         $this->label = $label;
         $this->endpoint = $endpoint;
         $this->name = $name;
         $this->schema = $this->columns();
+        foreach ($this->schema as $schema) {
+            if ($childrens = data_get($schema, 'childrens', null)) {
+                foreach ($childrens as $children) {
+                    if (data_get($children, 'props.ordering')) {
+                        $orderings[data_get($children, 'props.name')] = ViewsOrder::class;
+                    }
+                }
+            }
+        }
+       $this->offsetSet('orderings', $orderings);
+       
         return $this;
     }
 

@@ -6,11 +6,11 @@
  * https://www.sigasmart.com.br
  */
 
-namespace SIGA\Form\Resources;
+namespace SIGA\Resources;
 
-use SIGA\Form\Resources\Columns\Field;
-use SIGA\Form\Resources\Columns\Fluent;
-use SIGA\Form\Resources\Columns\Traits\WithDecorator;
+use SIGA\Resources\Columns\Field;
+use SIGA\Resources\Fluent;
+use SIGA\Resources\Traits\WithDecorator;
 
 class Slot extends Fluent
 {

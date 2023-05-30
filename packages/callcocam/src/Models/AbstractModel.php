@@ -14,6 +14,8 @@ use SIGA\Tenant\Facades\Tenant;
 use SIGA\Models\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids as ConcernsHasUlids;
+use Illuminate\Http\Request;
+use SIGA\Filters\Filters;
 use SIGA\Models\Concerns\HasRoutes;
 use SIGA\Sluggable\HasSlug;
 use SIGA\Sluggable\SlugOptions;
@@ -27,6 +29,17 @@ abstract class AbstractModel extends Model
 
     protected $keyType = "string";
 
+    /**
+     * The accessors to append to the model's
+     *
+     * @var array
+     */
+    protected $appends = [
+        'show_router',
+        'edit_router',
+        'destroy_router',
+        'actions'
+    ];
     
     /**
      * The attributes that should be cast.
@@ -74,6 +87,12 @@ abstract class AbstractModel extends Model
         //        $builder->where('tenant_id', auth()->user()->tenant_id);
     }
 
+    
+    public function scopeFilter(Builder $builder, Request $request, array $filters = [])
+    {
+        return (new Filters($request))->add($filters)->filter($builder);
+    }
+    
     public function __destruct()
     {
         Tenant::enable();
@@ -90,33 +109,5 @@ abstract class AbstractModel extends Model
                 ->saveSlugsTo($this->slugTo());
         }
     }
-
-
-    public function getEditRouterAttribute()
-    {
-        return $this->getDataRoute('edit');
-    }
-
-
-    public function getShowRouterAttribute()
-    {
-        return $this->getDataRoute('show');
-    }
-
-    public function getDestroyRouterAttribute()
-    {
-        return $this->getDataRoute('destroy');
-    }
-    public function getFileRouterAttribute()
-    {
-        return $this->getDataRoute('file');
-    }
-    public function getFilesRouterAttribute()
-    {
-        return $this->getDataRoute('files');
-    }
-    public function getEditorRouterAttribute()
-    {
-        return $this->getDataRoute('editor');
-    }
+ 
 }

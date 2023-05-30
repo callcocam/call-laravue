@@ -6,16 +6,17 @@
  * https://www.sigasmart.com.br
  */
 
-namespace SIGA\Form\Resources\Columns;
+namespace SIGA\Resources\Columns;
 
 use Illuminate\Support\Str;
-use SIGA\Form\Resources\Columns\Traits\WithDecorator;
+use SIGA\Resources\Traits\WithDecorator;
+use SIGA\Resources\Fluent;
 
 class Field extends Fluent
 {
 
     use WithDecorator;
-    
+
     public function __construct($label, $name = null)
     {
         if (!$name) {
@@ -40,12 +41,27 @@ class Field extends Fluent
     }
 
 
-    public static function radio($label, $name = null, $options=[])
+    public static function status($label, $name = null, $options = [
+        'draft' => 'Draft',
+        'published' => 'Published',
+    ])
+    {
+        $field = new static($label, $name);
+        $field->ordering();
+        $props = $field->props;
+        $props['options']  = $options;
+        $field->offsetSet('props', array_merge($props, ['type' => 'status']));
+
+        return $field;
+    }
+
+
+    public static function radio($label, $name = null, $options = [])
     {
         $field = new static($label, $name);
 
         $props = $field->props;
-        
+
         $props['options']  = $options;
 
         $field->offsetSet('props', array_merge($props, ['type' => 'radio']));
@@ -53,12 +69,12 @@ class Field extends Fluent
         return $field;
     }
 
-    public static function select($label, $name = null, $options=[])
+    public static function select($label, $name = null, $options = [])
     {
         $field = new static($label, $name);
 
         $props = $field->props;
-        
+
         $props['options']  = $options;
 
         $field->offsetSet('props', array_merge($props, ['type' => 'select']));
@@ -131,7 +147,18 @@ class Field extends Fluent
 
         $props = $field->props;
 
-        $field->offsetSet('props', array_merge($props, ['type' => 'editor']));
+        $field->offsetSet('props', array_merge($props, ['type' => 'editor', 'hideList' => true]));
+
+        return $field;
+    }
+
+    public static function timestamps($label, $name = null)
+    {
+        $field = new static($label, $name);
+
+        $props = $field->props;
+
+        $field->offsetSet('props', array_merge($props, ['type' => 'timestamps']));
 
         return $field;
     }
@@ -156,6 +183,7 @@ class Field extends Fluent
         $submit = [
             'type' => 'submit',
             'disableErrors' => true,
+            'hideList' => true,
             'styles' => 'rounded',
             'variant' => 'primary',
             'icon' => 'fa-regular-save',

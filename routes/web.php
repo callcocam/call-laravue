@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Post;
+use App\Resources\Make\PostResource;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use SIGA\Makes\Resources\MakeResource;
 
@@ -19,8 +22,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('test', function () {
-    return  MakeResource::make('Makes', 'makes')->icon('fa-layer-group');
+Route::get('test', function (Request $request) {
+    if ($resourse = app(PostResource::class)) {
+        try {
+            $resourse->init('Makes', 'makes');
+            $sortable = $resourse->orderings;
+            $data = array_merge(
+                $resourse ->icon('fa-layer-group')->toArray(),
+                app(Post::class)->query()->filter($request,$sortable)->paginate($request->query('perPage', 12))->toArray()
+            );
+            return response()->json($data);
+        } catch (\Exception $ex) {
+            return $this->PDOError($ex);
+        }
+    }
 });
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -41,7 +41,7 @@ function openModal() {
 }
 
 const deleteSelectFolder = async (directory, page) => {
-    const { id, file_manager_id, type, folder } = directory
+    let { id, file_manager_id, type, folder } = directory
     setLoading(true)
     try {
         await APIHttp.deleteServiceFolder(id)

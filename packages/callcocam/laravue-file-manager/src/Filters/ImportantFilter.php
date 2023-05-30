@@ -21,7 +21,7 @@ class ImportantFilter extends FilterAbstract
      *
      * @return Builder
      */
-    public function filter(Builder $builder, $value)
+    public function filter(Builder $builder, $value, $name=null)
     {
         if ($value === null) {
             return $builder;

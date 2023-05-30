@@ -28,10 +28,22 @@ class AbstractController extends BaseController
      */
     public function index(Request $request)
     {
-        if ($this->model) {
-
-            return  app($this->model)->query()->paginate();;
+        if ($this->resourse) {
+            if ($resourse = app($this->resourse)) {
+                try {
+                    $resourse->init('Makes', 'makes');
+                    $orderings = $resourse->orderings;
+                    $data = array_merge(
+                        $resourse->init('Makes', 'makes')->icon('fa-layer-group')->toArray(),
+                        app($this->model)->query()->filter($request,$orderings)->paginate($request->query('perPage', 12))->toArray()
+                    );
+                    return response()->json($data);
+                } catch (\Exception $ex) {
+                    return $this->PDOError($ex);
+                }
+            }
         }
+        return $this->NOTFOUNDrror();
     }
 
     /**

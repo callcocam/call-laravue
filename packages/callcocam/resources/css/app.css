@@ -11,3 +11,11 @@
 @import "highlight.js/styles/atom-one-dark.css"; /* Just for demo purpose only for highlighting code */
 
 
+.draft{
+    @apply badge bg-error text-white
+}
+
+
+.published{
+    @apply badge bg-success text-white
+}

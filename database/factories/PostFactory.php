@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use SIGA\FileManager\Models\FileManager;
@@ -24,10 +26,13 @@ class PostFactory extends Factory
             'tenant_id' => Tenant::query()->first()->id,
             'user_id' => User::all()->random()->id,
             'file_manager_id' => FileManager::query()->whereType('file')->get()->random()->id,
-            'name' => $this->faker->sentence,
+            'category_id' => Category::all()->random()->id,
+            'name' => $this->faker->name,
+            'ordering' => Post::query()->count(),
             'content' => $content,
-            'created_at' => now()->format("Y-m-d H:i:s"),
-            'updated_at' => now()->format("Y-m-d H:i:s"),
+            'status' => ['draft','published'][rand(0,1)],
+            'created_at' => now()->subDays(rand(1, 200))->format("Y-m-d H:i:s"),
+            'updated_at' => now()->subDays(rand(1, 200))->format("Y-m-d H:i:s"),
         ];
     }
 }

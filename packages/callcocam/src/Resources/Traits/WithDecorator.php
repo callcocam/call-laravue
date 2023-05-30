@@ -6,13 +6,41 @@
  * https://www.sigasmart.com.br
  */
 
-namespace SIGA\Form\Resources\Columns\Traits;
+namespace SIGA\Resources\Traits;
 
 /**
  * WithDecorator
  */
 trait WithDecorator
 {
+
+    public function ordering()
+    {
+        $this->offsetSet('props', array_merge($this->props, ['ordering' => true]));
+
+        return $this;
+    }
+
+    public function sortable()
+    {
+        $this->offsetSet('props', array_merge($this->props, ['sortable' => true]));
+
+        return $this;
+    }
+
+    public function searchable()
+    {
+        $this->offsetSet('props', array_merge($this->props, ['searchable' => true]));
+
+        return $this;
+    }
+
+    public function filter()
+    {
+        $this->offsetSet('props', array_merge($this->props, ['filter' => true]));
+
+        return $this;
+    }
 
     public function model($model)
     {

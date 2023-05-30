@@ -35,6 +35,8 @@ import Menu from '@laravue-menus';
 
 import Make from '@laravue-makes';
 
+import Table from '@laravue-table';
+
 import Siga from '@/components';
 
 
@@ -95,7 +97,12 @@ app.use(FileManager, {
 app.use(Menu, {
     http: useApi()
 })
+
 app.use(Make, {})
+
+app.use(Table, {
+    http: useApi()
+})
 
 
 app.directive('InfiniteScroll', vInfiniteScroll)

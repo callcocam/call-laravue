@@ -22,8 +22,9 @@ class DatabaseSeeder extends Seeder
 
         // $this->call(TenantSeeder::class);
         // $this->call(FileManagerSeeder::class);
-        // $this->call(PostSeeder::class);
+        $this->call(CategorySeeder::class);
+        $this->call(PostSeeder::class);
         // $this->call(MenuSeeder::class);
-        $this->call(SubMenuSeeder::class);
+        // $this->call(SubMenuSeeder::class);
     }
 }

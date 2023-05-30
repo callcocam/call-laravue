@@ -21,7 +21,7 @@ class RecentFilter extends FilterAbstract
      *
      * @return Builder
      */
-    public function filter(Builder $builder, $value)
+    public function filter(Builder $builder, $value, $name=null)
     {
         return $builder->whereNotNull('recent')->orderByDesc('recent');
     }

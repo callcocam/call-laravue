@@ -17,9 +17,10 @@ class ViewsOrder extends FilterAbstract
      *
      * @param Builder $builder
      * @param $direction
+     * @param $name=null
      * @return Builder
      */
-    public function filter(Builder $builder, $direction)
+    public function filter(Builder $builder, $direction, $name=null)
     {
         return $builder->orderBy('ordering', $this->resolveOrderDirection($direction));
     }

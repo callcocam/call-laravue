@@ -1,13 +1,16 @@
 <?php
+
 /**
  * Created by Claudio Campos.
  * User: callcocam@gmail.com, contato@sigasmart.com.br
  * https://www.sigasmart.com.br
  */
+
 namespace SIGA\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 abstract class FilterAbstract
 {
@@ -16,10 +19,11 @@ abstract class FilterAbstract
      *
      * @param  Builder $builder
      * @param  mixed  $value
+     * @param  mixed  $name = null
      *
      * @return Builder
      */
-    public abstract function filter(Builder $builder, $value);
+    public abstract function filter(Builder $builder, $value, $name = null);
 
     /**
      * Database value mappings.
@@ -39,7 +43,7 @@ abstract class FilterAbstract
      */
     protected function resolveFilterValue($key)
     {
-        return array_get($this->mappings(), $key);
+        return Arr::get($this->mappings(), $key);
     }
 
     /**
@@ -50,9 +54,9 @@ abstract class FilterAbstract
      */
     protected function resolveOrderDirection($direction)
     {
-        return array_get([
+        return Arr::get([
             'desc' => 'desc',
             'asc' => 'asc'
-        ], $direction, 'desc');
+        ], Str::lower($direction), 'desc');
     }
 }

@@ -16,6 +16,33 @@ use Illuminate\Support\Facades\Route;
 trait HasRoutes
 {
 
+
+    public function getActionsAttribute()
+    {
+        return [
+            $this->getDataRoute('show'),
+            $this->getDataRoute('edit'),
+            $this->getDataRoute('destroy'),
+        ];
+    }
+
+    public function getEditRouterAttribute()
+    {
+        return $this->getDataRoute('edit');
+    }
+
+
+    public function getShowRouterAttribute()
+    {
+        return $this->getDataRoute('show');
+    }
+
+    public function getDestroyRouterAttribute()
+    {
+        return $this->getDataRoute('destroy');
+    }
+
+
     public function getDataRoute($name)
     {
 

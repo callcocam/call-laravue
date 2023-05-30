@@ -47,6 +47,8 @@ module.exports = {
     "./laravue-file-manager/resources/**/*.{php,html,js,jsx,ts,tsx,vue}",
     "./laravue-form/src/**/*.{php,html,js,jsx,ts,tsx,vue}",
     "./laravue-form/resources/**/*.{php,html,js,jsx,ts,tsx,vue}",
+    "./laravue-table/src/**/*.{php,html,js,jsx,ts,tsx,vue}",
+    "./laravue-table/resources/**/*.{php,html,js,jsx,ts,tsx,vue}",
   ],
   darkMode: "class",
   theme: {

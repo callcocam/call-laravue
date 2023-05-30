@@ -52,7 +52,7 @@ abstract class FiltersAbstract
     public function filter(Builder $builder)
     {
         foreach ($this->getFilters() as $filter => $value) {
-            $this->resolveFilter($filter)->filter($builder, $value);
+            $this->resolveFilter($filter)->filter($builder, $value, $filter);
         }
 
         return $builder;
@@ -87,6 +87,7 @@ abstract class FiltersAbstract
      */
     protected function filterFilters($filters)
     {
+       
         return array_filter($this->request->only(array_keys($this->filters)));
     }
 }
