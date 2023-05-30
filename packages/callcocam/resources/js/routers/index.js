@@ -71,7 +71,7 @@ const createCrud = (path_name, route_name, label) => {
             },
             {
                 path: ":id/visualizar",
-                name: route_name.replace(".index", ".view"),
+                name: route_name.replace(".index", ".show"),
                 component: () => import("@/views/crud/View.vue"),
             },
             {

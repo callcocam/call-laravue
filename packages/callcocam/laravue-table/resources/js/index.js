@@ -134,8 +134,12 @@ class Table {
         return this.options.http.post(path, formData, options)
     }
 
-    get(path, formData, options = {}) {
+    get(path, formData={}, options = {}) {
         return this.options.http.get(path, formData, options)
+    }
+
+    delete(path, formData={}, options = {}) {
+        return this.options.http.delete(path, formData, options)
     }
 }
 

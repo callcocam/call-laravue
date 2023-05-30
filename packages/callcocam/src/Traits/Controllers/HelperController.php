@@ -23,8 +23,11 @@ trait HelperController
             'form_data' => $result,
             'message' => [
                 'title' => sprintf('OPPSS!! %s',  data_get($result, 'name')),
+                'text' => $content,
+                'body' => $content,
                 'content' => $content,
                 'color' => 'success',
+                'variant' => 'success',
                 "item" => null,
                 "time" => now()->diffForHumans()
 
@@ -36,7 +39,10 @@ trait HelperController
     {
         return response()->json([
             'error' => [
+                'text' => $PDOError->getMessage(),
+                "variant" => "error",
                 'content' => $PDOError->getMessage(),
+                'body' => $PDOError->getMessage(),
                 "title" => sprintf("OPPSS!! - %s", $PDOError->getCode()),
                 "item" => null,
                 "color" => "danger",
@@ -50,7 +56,10 @@ trait HelperController
         return response()->json([
             'error' => [
                 'title' => 'OPPSS!!',
+                'text' => 'Ouve um erro!!, registro não foi encontrado',
+                "variant" => "error",
                 'content' => "Ouve um erro!!, registro não foi encontrado",
+                'body' => "Ouve um erro!!, registro não foi encontrado",
                 "item" => null,
                 "color" => "danger",
                 "time" => now()->diffForHumans()

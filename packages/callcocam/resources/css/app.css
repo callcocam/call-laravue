@@ -19,3 +19,19 @@
 .published{
     @apply badge bg-success text-white
 }
+
+.btn-default{
+    @apply  text-slate-800 hover:bg-slate-200 hover:shadow-lg hover:shadow-slate-200/50 focus:bg-slate-200 focus:shadow-lg focus:shadow-slate-200/50 active:bg-slate-200/80  dark:text-navy-50 dark:hover:bg-navy-450 dark:hover:shadow-navy-450/50 dark:focus:bg-navy-450 dark:focus:shadow-navy-450/50 dark:active:bg-navy-450/90
+}
+
+.btn-primary{
+    @apply text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25
+}
+
+.btn-success{
+    @apply text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25
+}
+
+.btn-error{
+    @apply text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25
+}

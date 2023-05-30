@@ -15,9 +15,13 @@ import { OhVueIcon, addIcons } from "oh-vue-icons";
 import { vInfiniteScroll } from '@vueuse/components'
 
 import App from './App.vue'
+ 
 
+import ErrorService  from "./services/ErrorService";
 
 const app = createApp(App);
+
+app.config.errorHandler = (error) => ErrorService.onError(error);
 
 app.use(createPinia())
 
@@ -44,6 +48,7 @@ import Siga from '@/components';
 import { useApi } from "./api/useAPI";
 import popper from "./directives/popper";
 import i18nPlugin from './plugins/i18n'
+import notification from './plugins/magics/notification'
 import tooltip from "./directives/tooltip";
 import expandedItem from './directives/expanded-item';
 
@@ -51,6 +56,8 @@ app.use(i18nPlugin, {
     'Update photo': 'Alterar foto de perfil',
     'Change': 'Atualizar'
 })
+
+app.use(notification, { })
 
 
 import baseClasses from './components/classes';

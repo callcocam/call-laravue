@@ -33,18 +33,14 @@
                             </template>
                             <template v-if="model.hasOwnProperty('actions')">
                                 <td class="  px-4 py-1 font-medium text-slate-700 dark:text-navy-100 sm:px-5">
-                                    <button
-                                        class="btn h-9 w-9 p-0 font-medium text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
-                                        <x-icon name="fa-edit" class="h-5 w-5" />
-                                    </button>
-                                    <button
-                                        class="btn h-9 w-9 p-0 font-medium text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-                                        <x-icon name="fa-eye" class="h-5 w-5" />
-                                    </button>
-                                    <button
-                                        class="btn h-9 w-9 p-0 font-medium text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
-                                        <x-icon name="fa-regular-trash-alt" class="h-5 w-5" />
-                                    </button>
+                                    <template v-for="({ icon, label, route, path, color}, index) in model.actions" :key="index">
+                                        <template v-if="hasRoutes(route.name)">
+                                            <router-link :to="route" :title="label"
+                                                class="btn h-9 w-9 p-0 font-medium " :class="[color]">
+                                                <x-icon :name="icon" class="h-5 w-5" />
+                                            </router-link>
+                                        </template>
+                                    </template>
                                 </td>
                             </template>
                         </tr>
@@ -70,7 +66,7 @@
     </div>
 </template>
 <script>
-import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { has, map } from 'lodash';
 import { useManagerSelectedStore } from '../stores/selected';
 
@@ -103,15 +99,6 @@ export default {
                 this.selectedAll = this.selected.length == this.items.length
             },
         },
-        // selectedAll: {
-        //     handler: function (newValue, oldValue) {
-        //         if (newValue) {
-        //             this.selectAll()
-        //         } else {
-        //             this.clearSelected()
-        //         }
-        //     },
-        // },
     },
     methods: {
         selectAll() {
@@ -147,7 +134,7 @@ export default {
             if (this.endpoint) {
                 endpoint = this.endpoint
             } else {
-                endpoint = name.replace('.list', '')
+                endpoint = name.replace('.list', '').replace('.destroy', '')
             }
 
             const params = query
@@ -212,6 +199,7 @@ export default {
             return columns
 
         },
+        hasRoutes(route){ return this.$router.hasRoute(route)},
         hasCreate() { return this.$route.name.replace('list', 'create').replace('index', 'create') },
         hasEdit() { return this.$route.name.replace('index', 'edit').replace('list', 'edit') },
         hasApiList() { return this.$route.name.replace('.index', '').replace('.list', '').replace('.', '/') }

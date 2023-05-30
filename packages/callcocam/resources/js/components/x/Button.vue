@@ -6,7 +6,7 @@
 </template>
 <script setup>
 import { find, has } from 'lodash';
-import classes from '../classes';
+import {dataClasses} from '../classes';
 const props = defineProps({
     styles: {
         type: String,
@@ -26,7 +26,7 @@ const props = defineProps({
     }
 })
 const buttonStyle = () => {
-    const style = find(classes.button, c => props.styles)
+    const style = find(dataClasses.button, c => props.styles)
     if (has(style, props.variant)) {
         return style[props.variant]
     }

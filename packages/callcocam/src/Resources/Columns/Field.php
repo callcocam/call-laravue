@@ -152,6 +152,22 @@ class Field extends Fluent
         return $field;
     }
 
+    public static function actions(array $actions = [])
+    {
+        $field = new static(null, null);
+
+        $props = $field->props;
+        $actions[] =
+            $props['actions'] = array_merge($actions, [
+                Field::make('Show', 'show_router'),
+                Field::make('Edit', 'edit_router'),
+                Field::make('Trash', 'destroy_router'),
+            ]);
+        $field->offsetSet('props', $props);
+
+        return $field;
+    }
+
     public static function timestamps($label, $name = null)
     {
         $field = new static($label, $name);

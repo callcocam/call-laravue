@@ -70,6 +70,7 @@
 <script>
 import { find, get, has, map } from 'lodash';
 import { useManagerErrorsStore } from '../stores/errors'
+import ErrorService from "@/services/ErrorService";
 export default {
     name: 'FormData',
     inheritAttrs: false,
@@ -174,16 +175,7 @@ export default {
             } catch (error) {
 
                 this.isLoading = false
-
-                const { response, message } = error
-
-                if (response) {
-
-                    const { data } = response
-
-                }
-
-                console.log(error)
+                ErrorService.displayErrorAlert(error);
             }
         },
         applyInitialSchema(response) {
@@ -248,6 +240,10 @@ export default {
                     }
                     const { data } = await this.$form.put(endpoint, this.formData)
                     this.$emit('success', data)
+                    const { message } = data
+                    if (message) {
+                        this.$notification({ text: message.content, variant: 'success' })
+                    }
                 }
                 else {
                     if (this.endpoint) {
@@ -263,6 +259,7 @@ export default {
                 this.isLoading = false
             } catch (error) {
                 this.isLoading = false
+                ErrorService.displayErrorAlert(error);
                 const { response, message } = error
 
                 if (response) {

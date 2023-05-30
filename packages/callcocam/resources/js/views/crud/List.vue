@@ -6,6 +6,7 @@
                 :to="{ name: hasCreate() }"> New make</router-link>
         </template>
     </m-breadcrumb>
+    <router-view></router-view>
     <t-table />
 </template>
 <script setup>

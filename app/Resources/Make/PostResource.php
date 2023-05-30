@@ -21,7 +21,6 @@ class PostResource extends AbstractResources
     {
 
         return [
-            // Slot::make([])->span('4')->slot('left'),
             Slot::make([
                 Field::editor('Conteudo', 'content'),
             ])->span('8'),
