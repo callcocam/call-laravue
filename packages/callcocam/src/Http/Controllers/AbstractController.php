@@ -31,11 +31,9 @@ class AbstractController extends BaseController
         if ($this->resourse) {
             if ($resourse = app($this->resourse)) {
                 try {
-                    $resourse->init('Makes', 'makes');
-                    $orderings = $resourse->orderings;
                     $data = array_merge(
-                        $resourse->init('Makes', 'makes')->icon('fa-layer-group')->toArray(),
-                        app($this->model)->query()->filter($request,$orderings)->paginate($request->query('perPage', 12))->toArray()
+                        $resourse->init($this->model, 'makes')->icon('fa-layer-group')->toArray(),
+                        app($this->model)->query()->filter($request, $resourse->filters)->paginate($request->query('perPage', 12))->toArray()
                     );
                     return response()->json($data);
                 } catch (\Exception $ex) {
@@ -54,7 +52,7 @@ class AbstractController extends BaseController
         if ($this->resourse) {
             if ($resourse = app($this->resourse)) {
                 try {
-                    return response()->json($resourse->init('Makes', 'makes')->icon('fa-layer-group')->toArray());
+                    return response()->json($resourse->init($this->model, 'makes')->icon('fa-layer-group')->toArray());
                 } catch (\Exception $ex) {
                     return $this->PDOError($ex);
                 }
@@ -118,14 +116,18 @@ class AbstractController extends BaseController
      */
     public function edit(Request $request, $id)
     {
-        if ($this->model) {
-            if ($model = app($this->model)::find($id)) {
-                try {
-                    $data = PostResource::make('Posts', 'makes')->icon('fa-layer-group');
-                    $data['data'] = $model->toArray();
-                    return  $data;
-                } catch (PDOException $PDOError) {
-                    return $this->PDOError($PDOError);
+        if ($this->resourse) {
+            if ($resourse = app($this->resourse)) {
+                if ($this->model) {
+                    if ($model = app($this->model)::find($id)) {
+                        try {
+                            $data = $resourse->init($this->model)->icon('fa-layer-group');
+                            $data['data'] = $model->toArray();
+                            return  $data;
+                        } catch (PDOException $PDOError) {
+                            return $this->PDOError($PDOError);
+                        }
+                    }
                 }
             }
         }
