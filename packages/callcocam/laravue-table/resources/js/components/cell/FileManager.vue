@@ -1,6 +1,12 @@
 <template>
     <div :class="get(context.classes, 'element', ['avatar flex'])">
-       <img class="rounded-full" :src="get(context.model,   'filemanager.link_url', '')" alt="">
+        <template v-if="context.alias">
+            <img class="rounded-full" :src="get(context.model, context.alias.concat('.link_url'), 'filemanager.link_url')" alt="">
+        </template>
+        <template v-else>
+            <img class="rounded-full" :src="get(context.model,  'filemanager.link_url')" alt="">
+        </template>
+
     </div>
 </template>
 <script>

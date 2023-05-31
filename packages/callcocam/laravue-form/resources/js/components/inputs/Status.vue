@@ -5,11 +5,11 @@
                 <template v-for="(option, index) in options" :key="index">
                     <label class="inline-flex items-center space-x-2 ml-2" :for="option.id">
                         <template v-if="option.hasOwnProperty('value')">
-                            <input v-model="context.model" :type="context.type" :value="option.value" :id="option.hasOwnProperty('id') ? option.id : index"
+                            <input v-model="context.model" :type="'radio'" :value="option.value" :id="option.hasOwnProperty('id') ? option.id : index"
                                 @blur="context.blurHandler" />
                         </template>
                         <template v-else>
-                            <input v-model="context.model" :type="context.type" :value="index" :id="option.hasOwnProperty('id') ? option.id : index"
+                            <input v-model="context.model" :type="'radio'" :value="index" :id="option.hasOwnProperty('id') ? option.id : index"
                                 @blur="context.blurHandler" />
                         </template>
                         <span v-if="option.hasOwnProperty('label')" v-text="option.label"></span>

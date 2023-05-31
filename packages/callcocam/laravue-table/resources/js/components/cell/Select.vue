@@ -1,6 +1,11 @@
 <template>
     <div :class="get(context.classes, 'element', [])">
-        {{ get(context.model, context.name, '') }}
+        <template v-if="context.alias">
+            {{ get(context.model, context.alias, '') }}
+        </template>
+        <template v-else>
+            {{ get(context.model, context.name, '') }}
+        </template>
     </div>
 </template>
 <script>

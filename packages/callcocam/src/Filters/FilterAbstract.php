@@ -19,11 +19,11 @@ abstract class FilterAbstract
      *
      * @param  Builder $builder
      * @param  mixed  $value
-     * @param  mixed  $name = null
+     * @param  mixed  $columns = null
      *
      * @return Builder
      */
-    public abstract function filter(Builder $builder, $value, $name = null);
+    public abstract function filter(Builder $builder, $value, $columns = null);
 
     /**
      * Database value mappings.

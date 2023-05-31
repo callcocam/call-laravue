@@ -1,9 +1,11 @@
 <?php
+
 /**
  * Created by Claudio Campos.
  * User: callcocam@gmail.com, contato@sigasmart.com.br
  * https://www.sigasmart.com.br
  */
+
 namespace SIGA\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -52,7 +54,9 @@ abstract class FiltersAbstract
     public function filter(Builder $builder)
     {
         foreach ($this->getFilters() as $filter => $value) {
-            $this->resolveFilter($filter)->filter($builder, $value, $filter);
+            if ($class = $this->resolveFilter($filter, $value, $builder)) {
+                $class->filter($builder, $value, $filter);
+            }
         }
 
         return $builder;
@@ -61,12 +65,22 @@ abstract class FiltersAbstract
     /**
      * Instantiate a filter.
      *
-     * @param  string $filter
+     * @param  string $filterKey
      * @return mixed
      */
-    protected function resolveFilter($filter)
+    protected function resolveFilter($filterKey, $value, $builder)
     {
-        return new $this->filters[$filter];
+        if ($filterClass = $this->filters[$filterKey]) {
+            if (is_string($filterClass)) {
+                return new $filterClass;
+            }
+        }
+
+        if (is_array($filterClass)) { 
+            $column = data_get($filterClass, 'column');
+            $class = data_get($filterClass, 'filter'); 
+            (new $class)->filter($builder, $value, $column);
+        }
     }
 
     /**
@@ -87,7 +101,6 @@ abstract class FiltersAbstract
      */
     protected function filterFilters($filters)
     {
-       
         return array_filter($this->request->only(array_keys($this->filters)));
     }
 }

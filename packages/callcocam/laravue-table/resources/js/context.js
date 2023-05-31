@@ -6,6 +6,7 @@ export default {
             http: this.http,
             type: this.type,
             name: this.name,
+            alias: this.alias,
             model: this.model,
             localAttributes: this.localAttributes,
             slotProps: this.slotProps,

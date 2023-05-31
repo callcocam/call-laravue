@@ -25,11 +25,14 @@ Route::get('/', function () {
 Route::get('test', function (Request $request) {
     if ($resourse = app(PostResource::class)) {
         try {
-            $resourse->init('Makes', 'makes');
-            $sortable = $resourse->orderings;
+            $resourse->init(Post::class, 'makes');
+            // dd($resourse->filters);
             $data = array_merge(
                 $resourse ->icon('fa-layer-group')->toArray(),
-                app(Post::class)->query()->filter($request,$sortable)->paginate($request->query('perPage', 12))->toArray()
+                app(Post::class)->query()
+                ->filter($request,$resourse->filters)
+                ->paginate($request->query('perPage', 12))
+                ->toArray()
             );
             return response()->json($data);
         } catch (\Exception $ex) {

@@ -17,7 +17,6 @@ class CategoryResource extends AbstractResources
 
     public function columns()
     {
-
         return [
             // Slot::make([])->span('4')->slot('left'),
             Slot::make([

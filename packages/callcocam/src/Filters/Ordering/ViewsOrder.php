@@ -19,11 +19,19 @@ class ViewsOrder extends FilterAbstract
      *
      * @param Builder $builder
      * @param $direction
-     * @param $name=null
+     * @param $columns=null
      * @return Builder
      */
-    public function filter(Builder $builder, $direction, $name = null)
+    public function filter(Builder $builder, $direction, $columns = null)
     {
-        return $builder->orderBy($name, $this->resolveOrderDirection($direction));
+        if (is_array($columns)) {
+            $column = request()->query('column');
+            if (in_array($column, $columns)) {
+               
+                return $builder->orderBy($column, $this->resolveOrderDirection($direction));
+            }
+            return $builder;
+        }
+        return $builder->orderBy($columns, $this->resolveOrderDirection($direction));
     }
 }

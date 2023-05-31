@@ -6,13 +6,15 @@
                     <div :class="span" class="col-span-12">
                         <div class="card space-y-4 p-4">
                             <template v-for="(children, index) in childrens" :key="index">
-                                <template v-if="children.props.hasOwnProperty('name')">
-                                    <CFormInput v-bind="children.props"
-                                        :models="children.props.hasOwnProperty('model') ? form[children.props.model] : null"
-                                        :value="form[children.props.name]" v-model="form[children.props.name]" />
-                                </template>
-                                <template v-else>
-                                    <CFormInput v-bind="children.props" />
+                                <template v-if="!hideCreateOrUpdate(children.props, 'hideEdit','hideCreate')">
+                                    <template v-if="children.props.hasOwnProperty('name')">
+                                        <CFormInput v-bind="children.props"
+                                            :models="children.props.hasOwnProperty('model') ? form[children.props.model] : null"
+                                            :value="form[children.props.name]" v-model="form[children.props.name]" />
+                                    </template>
+                                    <template v-else>
+                                        <CFormInput v-bind="children.props" />
+                                    </template>
                                 </template>
                             </template>
                         </div>
@@ -22,13 +24,15 @@
                     <div :class="span" class="col-span-12">
                         <div class="card space-y-4 p-4">
                             <template v-for="(children, index) in childrens" :key="index">
-                                <template v-if="children.props.hasOwnProperty('name')">
-                                    <CFormInput v-bind="children.props"
-                                        :models="children.props.hasOwnProperty('model') ? form[children.props.model] : null"
-                                        :value="form[children.props.name]" v-model="form[children.props.name]" />
-                                </template>
-                                <template v-else>
-                                    <CFormInput v-bind="children.props" />
+                                <template v-if="!hideCreateOrUpdate(children.props, 'hideEdit','hideCreate')">
+                                    <template v-if="children.props.hasOwnProperty('name')">
+                                        <CFormInput v-bind="children.props"
+                                            :models="children.props.hasOwnProperty('model') ? form[children.props.model] : null"
+                                            :value="form[children.props.name]" v-model="form[children.props.name]" />
+                                    </template>
+                                    <template v-else>
+                                        <CFormInput v-bind="children.props" />
+                                    </template>
                                 </template>
                             </template>
                         </div>
@@ -50,13 +54,15 @@
                             </div>
                             <div class="gap-4 p-4 sm:p-5 grid grid-cols-12">
                                 <template v-for="(children, index) in childrens" :key="index">
-                                    <template v-if="children.props.hasOwnProperty('name')">
-                                        <CFormInput v-bind="children.props"
-                                            :models="children.props.hasOwnProperty('model') ? form[children.props.model] : null"
-                                            :value="form[children.props.name]" v-model="form[children.props.name]" />
-                                    </template>
-                                    <template v-else>
-                                        <CFormInput v-bind="children.props" />
+                                    <template v-if="!hideCreateOrUpdate(children.props, 'hideEdit','hideCreate')">
+                                        <template v-if="children.props.hasOwnProperty('name')">
+                                            <CFormInput v-bind="children.props"
+                                                :models="children.props.hasOwnProperty('model') ? form[children.props.model] : null"
+                                                :value="form[children.props.name]" v-model="form[children.props.name]" />
+                                        </template>
+                                        <template v-else>
+                                            <CFormInput v-bind="children.props" />
+                                        </template>
                                     </template>
                                 </template>
                             </div>
@@ -129,6 +135,11 @@ export default {
         },
     },
     methods: {
+        hideCreateOrUpdate(obj,hideEdit ,hideCreate, _default = false) {
+            if(get(obj, hideEdit)) return false;
+            if(get(obj, hideCreate)) return false;
+            return _default;
+        },
         async get() {
 
             const { params, name } = this.$route
@@ -242,7 +253,7 @@ export default {
                     this.$emit('success', data)
                     const { message } = data
                     if (message) {
-                        this.$notification({ text: message.content, variant: 'success' })
+                        ErrorService.displaySuccessAlert(message);
                     }
                 }
                 else {

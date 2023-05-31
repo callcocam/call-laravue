@@ -11,6 +11,8 @@ namespace SIGA\Resources;
 
 use Illuminate\Support\Str;
 use SIGA\Filters\Ordering\ViewsOrder;
+use SIGA\Filters\SearchFilter;
+use SIGA\Resources\Columns\Field;
 use SIGA\Resources\Traits\WithDecorator;
 use SIGA\Resources\Traits\WithHidden;
 
@@ -25,24 +27,41 @@ abstract class AbstractResources extends Fluent implements ResourcesInterface
         $this->name = $name;
     }
 
-    public function init($label, $endpoint, $name = null)
+    public function init($label, $endpoint = null, $name = null)
     {
         $orderings = [];
-        $this->label = $label;
-        $this->endpoint = $endpoint;
+        $searchables = [];
+        $colums = [];
+        $this->label = Str::afterLast($label, '\\');
+        $this->label = Str::plural($this->label);
+        $this->endpoint = Str::lower($this->label);
         $this->name = $name;
         $this->schema = $this->columns();
+        $filters = $this->filters();
         foreach ($this->schema as $schema) {
             if ($childrens = data_get($schema, 'childrens', null)) {
                 foreach ($childrens as $children) {
                     if (data_get($children, 'props.ordering')) {
-                        $orderings[data_get($children, 'props.name')] = ViewsOrder::class;
+                        $colums['order'][data_get($children, 'props.name')] = data_get($children, 'props.name');
+                        $orderings['order'] = [
+                            'column' => $colums['order'],
+                            'filter' => ViewsOrder::class
+                        ];
+                    }
+                    if (data_get($children, 'props.searchable')) {
+                        $colums['search'][data_get($children, 'props.name')] = data_get($children, 'props.name');
+                        $searchables['search'] = [
+                            'column' => $colums['search'],
+                            'filter' => SearchFilter::class
+                        ];
                     }
                 }
             }
         }
-       $this->offsetSet('orderings', $orderings);
-       
+        $filters  = array_merge($orderings, $searchables);
+
+        $this->offsetSet('filters',  $filters);
+
         return $this;
     }
 
@@ -51,7 +70,14 @@ abstract class AbstractResources extends Fluent implements ResourcesInterface
     {
         $resource = new static($label,  $endpoint, $name);
         $resource->schema = $resource->columns();
+        $resource->filters = $resource->filters();
         return $resource;
+    }
+
+
+    public function input($label, $name = null)
+    {
+        return Field::make($label, $name);
     }
 
     public function icon($icon)
@@ -59,5 +85,15 @@ abstract class AbstractResources extends Fluent implements ResourcesInterface
         $this->icon = $icon;
 
         return $this;
+    }
+
+    public function filters()
+    {
+        return [];
+    }
+
+    public function getFilters()
+    {
+        return $this->filters;
     }
 }

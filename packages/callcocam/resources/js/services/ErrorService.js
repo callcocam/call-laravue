@@ -1,5 +1,5 @@
 import Toastify from "toastify-js";
-
+import Swal from 'sweetalert2'
 class ErrorService {
     constructor() {
         // this.initHandler();
@@ -48,20 +48,54 @@ class ErrorService {
         };
     }
 
+    static displaySuccessAlert(message) {
+        Swal.fire({
+            title: message.title,
+            text: message.content,
+            icon: "success",
+            timer:3000,
+            customClass: {
+                popup:'bg-white px-4 py-10 text-center transition-opacity duration-300 dark:bg-navy-700 text-slate-700 dark:text-navy-100',
+                confirmButton: 'btn bg-success font-medium text-white hover:bg-success-focus focus:bg-success-focus active:bg-success-focus/90',
+                closeButton: 'btn bg-info font-medium text-white hover:bg-info-focus focus:bg-info-focus active:bg-info-focus/90',
+                cancelButton: 'btn bg-error font-medium text-white hover:bg-error-focus focus:bg-error-focus active:bg-error-focus/90'
+            }
+        })
+    }
     static displayErrorAlert(err) {
         const { message, response } = err
 
-        if (message) {
-            Toastify({ text: message, variant: 'error' }).showToast()
-        }
+        // if (message) {
+        //     Toastify({ text: message, variant: 'error' }).showToast()
+        // }
         if (response) {
             const { data } = response
             const { error } = data
             if (error) {
-                Toastify({ text: error.text, variant: error.variant }).showToast()
+                Swal.fire({
+                    title: "Error!",
+                    text: data.message,
+                    icon: "error",
+                    timer:3000,
+                    customClass: {
+                        popup:'bg-white px-4 py-10 text-center transition-opacity duration-300 dark:bg-navy-700 text-slate-700 dark:text-navy-100',
+                        // confirmButton: 'btn bg-info font-medium text-white hover:bg-info-focus focus:bg-info-focus active:bg-info-focus/90',
+                        confirmButton: 'btn bg-error font-medium text-white hover:bg-error-focus focus:bg-error-focus active:bg-error-focus/90'
+                    }
+                })
             } else {
                 if (data) {
-                    Toastify({ text: data.message, variant: error.variant}).showToast()
+                    Swal.fire({
+                        title: "Error!",
+                        text: data.message,
+                        icon: "error",
+                        timer:3000,
+                        customClass: {
+                            popup:'bg-white px-4 py-10 text-center transition-opacity duration-300 dark:bg-navy-700 text-slate-700 dark:text-navy-100',
+                            // confirmButton: 'btn bg-info font-medium text-white hover:bg-info-focus focus:bg-info-focus active:bg-info-focus/90',
+                            confirmButton: 'btn bg-error font-medium text-white hover:bg-error-focus focus:bg-error-focus active:bg-error-focus/90'
+                        }
+                    })
                 }
             }
         }

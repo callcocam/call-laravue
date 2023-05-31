@@ -20,10 +20,15 @@ class Post extends AbstractModel
     ];
 
     
-    public $with = ['filemanager'];
+    public $with = ['filemanager','category'];
 
     public function fileManager()
     {
         return $this->belongsTo(FileManager::class)->with('folder');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

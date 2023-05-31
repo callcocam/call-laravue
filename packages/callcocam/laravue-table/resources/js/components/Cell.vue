@@ -13,6 +13,10 @@ export default {
             type: [String, Boolean],
             default: false
         },
+        alias: {
+            type: [String, Boolean],
+            default: false
+        },
         model: {
             type: Object
         },

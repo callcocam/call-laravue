@@ -80,7 +80,7 @@ export default {
                 const { data } = await this.$table.delete(endpoint.concat('/').concat(params.id))
                 const { message } = data
                 if (message) {
-                    this.$notification({ text: message.content, variant: 'success' })
+                    ErrorService.displaySuccessAlert(message);
                 }
                 this.$router.go(-1)
 

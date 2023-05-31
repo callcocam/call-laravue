@@ -14,23 +14,30 @@ namespace SIGA\Resources\Traits;
 trait WithDecorator
 {
 
-    public function ordering()
+    public function ordering($ordering = true)
     {
-        $this->offsetSet('props', array_merge($this->props, ['ordering' => true]));
+        $this->offsetSet('props', array_merge($this->props, ['ordering' => $ordering]));
 
         return $this;
     }
 
-    public function sortable()
+    public function sortable($sortable = true)
     {
-        $this->offsetSet('props', array_merge($this->props, ['sortable' => true]));
+        $this->offsetSet('props', array_merge($this->props, ['sortable' => $sortable]));
 
         return $this;
     }
 
-    public function searchable()
+    public function searchable($searchable = true)
     {
-        $this->offsetSet('props', array_merge($this->props, ['searchable' => true]));
+        $this->offsetSet('props', array_merge($this->props, ['searchable' => $searchable]));
+
+        return $this;
+    }
+
+    public function alias($alias)
+    {
+        $this->offsetSet('props', array_merge($this->props, ['alias' => $alias]));
 
         return $this;
     }

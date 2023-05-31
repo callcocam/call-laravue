@@ -65,30 +65,36 @@ export default {
         return {
             isSortabled: [],
             isSortabledNme: [],
-            sort: get(this.$route.query, this.name, 'ASC') == 'ASC' ? 'DESC' : 'ASC'
+            order: get(this.$route.query, 'order', 'ASC') == 'ASC' ? 'DESC' : 'ASC'
         }
     },
     methods: {
         isSort(name) {
-            if (has(this.$route.query, name)) {
-                if (get(this.$route.query, name) == 'ASC') {
-                    return 'fa-sort-up';
-                } else if (get(this.$route.query, name) == 'DESC') {
-                    return 'fa-sort-down';
+            if (has(this.$route.query, 'column')) {
+                if (get(this.$route.query, 'column') == name) {
+                    if (has(this.$route.query, 'order')) {
+                        if (get(this.$route.query, 'order') == 'ASC') {
+                            return 'fa-sort-up';
+                        } else if (get(this.$route.query, 'order') == 'DESC') {
+                            return 'fa-sort-down';
+                        }
+                    }
                 }
             }
             return 'fa-sort';
         },
         getLink(name) {
-            if (get(this.$route.query, name) == 'ASC') {
-                this.isSortabled = { ...this.$route.query, [name]: this.sort };
-                delete this.isSortabled[name]
+            const column = name
+            const order = this.order
+            if (get(this.$route.query, 'order') == 'ASC') {
+                const query = { ...this.$route.query };
+                delete query.column
+                delete query.order
+                this.$router.push({ name: this.$route.name, query })
             } else {
-                this.isSortabled = { ...this.$route.query, [name]: this.sort };
+                const query = { ...this.$route.query, order, column };
+                this.$router.push({ name: this.$route.name, query })
             }
-            const query = this.isSortabled;
-
-            this.$router.push({ name: this.$route.name, query })
         },
         get(obj, key, _default = {}) {
             return _.get(obj, key, _default)

@@ -37,7 +37,7 @@ export default {
   // === BOX STYLE INPUTS
   checkbox: add('box'),
   radio: add('box'),
-  status: add('box'),
+  status: add('status'),
 
   // === BUTTON STYLE INPUTS
   submit: add('button'),

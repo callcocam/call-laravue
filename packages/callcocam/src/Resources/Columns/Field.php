@@ -11,11 +11,12 @@ namespace SIGA\Resources\Columns;
 use Illuminate\Support\Str;
 use SIGA\Resources\Traits\WithDecorator;
 use SIGA\Resources\Fluent;
+use SIGA\Resources\Traits\WithHidden;
 
 class Field extends Fluent
 {
 
-    use WithDecorator;
+    use WithDecorator, WithHidden;
 
     public function __construct($label, $name = null)
     {
@@ -41,7 +42,7 @@ class Field extends Fluent
     }
 
 
-    public static function status($label, $name = null, $options = [
+    public static function status($label = 'Status', $name = 'status', $options = [
         'draft' => 'Draft',
         'published' => 'Published',
     ])
@@ -94,7 +95,7 @@ class Field extends Fluent
         return $field;
     }
 
-    public static function filemanager($label, $name = null)
+    public static function filemanager($label = 'File Manager', $name = 'file_manager_id')
     {
         $field = new static($label, $name);
 
@@ -141,7 +142,7 @@ class Field extends Fluent
         return $field;
     }
 
-    public static function editor($label, $name = null)
+    public static function editor($label, $name = null, $options = [])
     {
         $field = new static($label, $name);
 
@@ -168,16 +169,6 @@ class Field extends Fluent
         return $field;
     }
 
-    public static function timestamps($label, $name = null)
-    {
-        $field = new static($label, $name);
-
-        $props = $field->props;
-
-        $field->offsetSet('props', array_merge($props, ['type' => 'timestamps']));
-
-        return $field;
-    }
 
     public static function textarea($label, $name = null)
     {
