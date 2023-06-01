@@ -133,6 +133,14 @@ app.directive("expanded", expanded);
 app.directive('popper', popper)
 app.directive("tooltip", tooltip);
 
+app.directive('focus', {
+    // When the bound element is mounted into the DOM...
+    mounted(el) {
+      // Focus the element
+      el.focus()
+    }
+  })
+  
 import { cretaeRoutes } from './routers';
 
 useApi().get("load/menus").then(resp => {

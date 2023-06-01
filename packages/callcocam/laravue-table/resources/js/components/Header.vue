@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-full relative">
+    <div class="flex flex-col w-full relative">
         <template v-if="ordering">
             <button type="button" class="flex-1" @click="getLink(name)">
                 <div class="flex justify-between items-center w-full">
@@ -10,9 +10,6 @@
         </template>
         <template v-else>
             <span>{{ label }}</span>
-        </template>
-        <template v-if="filter">
-            <!-- <TFilters /> -->
         </template>
     </div>
 </template>

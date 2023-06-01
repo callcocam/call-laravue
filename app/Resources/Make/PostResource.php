@@ -22,8 +22,7 @@ class PostResource extends AbstractResources
     
     public function filters()
     {
-        return [ 
-        ];
+        return [ ];
     }
 
 
@@ -35,7 +34,7 @@ class PostResource extends AbstractResources
             ->editor()->span('8'),
             Slot::blank()
                 ->add($this->input('Name')->ordering()->searchable()->filter())
-                ->hasMany(Category::class)
+                ->hasMany(Category::class, ['filter'=>true])
                 ->filemanager()
                 ->timestamps(['ordering'=>true])
                 ->status(['ordering'=>true])

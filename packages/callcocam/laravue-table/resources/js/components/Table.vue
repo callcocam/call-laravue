@@ -1,34 +1,5 @@
 <template>
-    <div>
-        <div class="flex items-center justify-between">
-            <h2 class="text-base font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100">
-                <span v-if="label"> {{ label }}</span>
-            </h2>
-            <div class="flex items-center">
-                <div class="flex items-center">
-                    <label class="block">
-                        <input :class="{ 'w-32 lg:w-48': isInputActive, 'w-0': !isInputActive }"
-                            class="form-input bg-transparent px-1 text-right transition-all duration-100 placeholder:text-slate-500 dark:placeholder:text-navy-200"
-                            placeholder="Search here..." type="text" />
-                    </label>
-                    <button @click="isInputActive = !isInputActive"
-                        class="btn h-8 w-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
-                        <x-icon name="fa-search" class="h-5 w-5" />
-                    </button>
-                </div>
-
-                <button @click="isFilterExpanded = !isFilterExpanded"
-                    class="btn h-8 w-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18 11.5H6M21 4H3m6 15h6" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <div v-expanded="{ expandedItem: isFilterExpanded, isSpand: isFilterExpanded }" ref="expandedID"
-            class="transition-all duration-200">
-            <TFilters v-if="isFilterExpanded" />
-        </div>
+    <TFilters :label="label">
         <div class="card mt-3">
             <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
                 <table class="w-full text-left">
@@ -48,16 +19,45 @@
 
                             </th>
                         </tr>
+
                     </thead>
                     <tbody>
                         <template v-if="!loading">
                             <template v-if="items">
+                                <tr v-if="isFilter"
+                                    class="border-2 border-transparent border-b-slate-300 dark:border-b-navy-400 shadow-lg mb-2">
+                                    <td></td>
+                                    <template v-for="({ props }, index) in  this.filters" :key="index">
+                                        <td
+                                            class=" px-3 py-1 font-semibold  mx-2 text-slate-800 dark:text-navy-100 lg:px-5">
+                                            <template v-if="props.filter">
+                                                <t-filter v-bind="props"  />
+                                            </template>
+                                        </td>
+                                    </template>
+                                    <td></td>
+                                </tr>
+                                <template v-if="selected.length">
+                                    <tr class="border border-transparent border-b-slate-200 dark:border-b-navy-500">
+                                        <td class="px-4 py-2" colspan="100">
+                                            <div class="flex items-center w-full space-x-1">
+                                                <span>{{ $t('You have selected') }}</span>
+                                                <strong class="text-cyan-600 text-lg">{{ selected.length }}</strong>
+                                                <span> {{ $t('transactions, do you want to select all') }}</span>
+                                                <strong class="text-cyan-700 text-lg">{{ pagination.total }}</strong>
+                                                <x-button variant="filled" @click="clearSelected"
+                                                    class="ml-1 text-blue-600">{{ $t('Clear all select') }}</x-button>
+                                                <span>{{ $t('registers') }}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </template>
                                 <tr v-for="(model, index) in items" :key="model.id"
                                     class="border border-transparent border-b-slate-200 dark:border-b-navy-500">
                                     <td class=" px-4 py-1 sm:px-5">
                                         <input :value="model.id" v-model="selected" type="checkbox">
                                     </td>
-                                    <template v-for="({ props }, index) in  this.getColumns(schema)" :key="index">
+                                    <template v-for="({ props }, index) in  this.columns" :key="index">
                                         <td class="  px-4 py-1 font-medium text-slate-700 dark:text-navy-100 sm:px-5">
                                             <t-cell v-bind="props" :model="model" />
                                         </td>
@@ -93,12 +93,11 @@
                     </tbody>
                 </table>
             </div>
-
             <template v-if="!loading">
-                <t-pagination v-if="pagination" v-bind="pagination" @filter="filters" />
+                <t-pagination v-if="pagination" v-bind="pagination" @filter="getFilters" />
             </template>
         </div>
-    </div>
+    </TFilters>
 </template>
 <script>
 
@@ -114,6 +113,10 @@ export default {
     data() {
         return {
             selected: [],
+            columns: [],
+            filters: [],
+            isFilter: false,
+            isInputActive: false,
             isInputActive: false,
             isFilterExpanded: false,
             selectedAll: false,
@@ -147,7 +150,7 @@ export default {
         clearSelected() {
             this.selected = []
         },
-        filters(queryParams) {
+        getFilters(queryParams) {
 
 
             const query = { ...this.$route.query, ...queryParams }
@@ -222,6 +225,8 @@ export default {
         getColumns(schema) {
 
             const columns = []
+            this.columns=[]
+            this.filters=[]
 
             const childrens = schema.map(({ childrens }) => {
                 return childrens
@@ -230,6 +235,11 @@ export default {
                 s.map(column => {
                     if (!get(column.props, 'hideList')) {
                         columns.push(column)
+                        this.filters.push(column)
+                        this.columns.push(column)
+                        if (!get(column.props, 'filter')) {
+                            this.isFilter = true
+                        }
                     }
                 })
             })

@@ -58,24 +58,26 @@ class Slot extends Fluent
         $timestampsOptions = array_merge([
             'label' => 'Data de criação',
             'name' => 'created_at',
+            'filter' => true,
         ], $options);
 
         $label = data_get($timestampsOptions, 'label');
         $name = data_get($timestampsOptions, 'name');
 
         if (data_get($options, 'created', true))
-            $this->mergeOptions(Field::date($label, $name), $options);
+            $this->mergeOptions(Field::date($label, $name), $timestampsOptions);
 
         $timestampsOptions = array_merge([
             'label' => 'Data de atualização',
             'name' => 'updated_at',
+            'filter' => true,
         ], $options);
 
         $label = data_get($timestampsOptions, 'label');
         $name = data_get($timestampsOptions, 'name');
 
         if (data_get($options, 'updated', true))
-            $this->mergeOptions(Field::date($label, $name), $options);
+            $this->mergeOptions(Field::date($label, $name), $timestampsOptions);
 
         return $this;
     }
@@ -111,8 +113,8 @@ class Slot extends Fluent
         $label = data_get($editorOptions, 'label');
         $name = data_get($editorOptions, 'name');
 
-        $this->mergeOptions(Field::editor($label, $name, data_get($options, 'options', [])),array_merge([
-            'hideList'=>true
+        $this->mergeOptions(Field::editor($label, $name, data_get($options, 'options', [])), array_merge([
+            'hideList' => true
         ], $options));
 
         return $this;
@@ -136,7 +138,7 @@ class Slot extends Fluent
     public function filemanager($label = 'File Manager', $options = [])
     {
         $fileManagerOptions = array_merge([
-            'label' => 'File Manager',
+            'label' => 'File',
             'name' => 'file_manager_id',
             'alias' => 'filemanager',
         ], $options);
@@ -156,6 +158,7 @@ class Slot extends Fluent
         $statusOptions = array_merge([
             'label' => 'Status',
             'name' => 'status',
+            'filter' => true,
         ], $options);
 
         $values_options = data_get($options, 'values_options', [
@@ -166,7 +169,7 @@ class Slot extends Fluent
         $label = data_get($statusOptions, 'label');
         $name = data_get($statusOptions, 'name');
 
-        $this->mergeOptions(Field::status($label, $name, $values_options), $options);
+        $this->mergeOptions(Field::status($label, $name, $values_options), $statusOptions);
 
         return $this;
     }
@@ -185,6 +188,7 @@ class Slot extends Fluent
     private function mergeOptions(Field $field, $options = [])
     {
         $field
+            ->filter(data_get($options, 'filter', false))
             ->ordering(data_get($options, 'ordering', false))
             ->hideList(data_get($options, 'hideList', false))
             ->hideCreate(data_get($options, 'hideCreate', false))

@@ -12,20 +12,21 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.{vue,js,ts,jsx,tsx}',
 
-        './packages/callcocam/laravue-menus/resources/js/**/*.{vue,js,ts,jsx,tsx}',
+        './packages/callcocam/laravue-menus/src/**/*.{php,html,js,jsx,ts,tsx,vue}',
+        './packages/callcocam/laravue-menus/resources/**/*.{vue,js,ts,jsx,tsx}',
         './packages/callcocam/laravue-menus/resources/views/*.blade.php',
 
-        './packages/callcocam/laravue-file-manager/resources/js/**/*.{vue,js,ts,jsx,tsx}',
+        './packages/callcocam/laravue-file-manager/resources/**/*.{vue,js,ts,jsx,tsx}',
         './packages/callcocam/laravue-file-manager/resources/views/*.blade.php',
 
         './packages/callcocam/laravue-form/resources/views/*.blade.php',
-        './packages/callcocam/laravue-form/resources/js/**/*.{vue,js,ts,jsx,tsx}',
+        './packages/callcocam/laravue-form/resources/**/*.{vue,js,ts,jsx,tsx}',
         
 
         './packages/callcocam/laravue-table/resources/views/*.blade.php',
-        './packages/callcocam/laravue-table/resources/js/**/*.{vue,js,ts,jsx,tsx}',
+        './packages/callcocam/laravue-table/resources/**/*.{vue,js,ts,jsx,tsx}',
         
-        './packages/callcocam/resources/js/**/*.{vue,js,ts,jsx,tsx}',
+        './packages/callcocam/resources/**/*.{vue,js,ts,jsx,tsx}',
         './packages/callcocam/resources/views/*.blade.php'
     ],
 

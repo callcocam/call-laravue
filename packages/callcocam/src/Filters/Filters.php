@@ -20,6 +20,7 @@ class Filters extends FiltersAbstract
      * @var array
      */
     protected $filters = [
+        'range' => RangerFilter::class,
         'search' => SearchFilter::class,
         'ordering' => ViewsOrder::class
     ];

@@ -42,9 +42,9 @@ trait WithDecorator
         return $this;
     }
 
-    public function filter()
+    public function filter($filter=true)
     {
-        $this->offsetSet('props', array_merge($this->props, ['filter' => true]));
+        $this->offsetSet('props', array_merge($this->props, ['filter' => $filter]));
 
         return $this;
     }

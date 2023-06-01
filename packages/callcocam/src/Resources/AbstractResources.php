@@ -10,6 +10,7 @@ namespace SIGA\Resources;
 
 
 use Illuminate\Support\Str;
+use SIGA\Filters\EqualFilter;
 use SIGA\Filters\Ordering\ViewsOrder;
 use SIGA\Filters\SearchFilter;
 use SIGA\Resources\Columns\Field;
@@ -55,10 +56,23 @@ abstract class AbstractResources extends Fluent implements ResourcesInterface
                             'filter' => SearchFilter::class
                         ];
                     }
+                    if (data_get($children, 'props.filter')) {
+                        switch (data_get($children, 'type')) {
+                            case 'select':
+                                $filters[data_get($children, 'props.name')] =  EqualFilter::class;
+                                break;
+                            case 'radio':
+                                $filters[data_get($children, 'props.name')] =  EqualFilter::class;
+                                break;
+                            default:
+                                $filters[data_get($children, 'props.name')] =  SearchFilter::class;
+                                break;
+                        }
+                    }
                 }
             }
         }
-        $filters  = array_merge($orderings, $searchables);
+        $filters  = array_merge($orderings, $searchables, $filters);
 
         $this->offsetSet('filters',  $filters);
 

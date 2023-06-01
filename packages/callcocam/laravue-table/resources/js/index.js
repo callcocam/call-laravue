@@ -3,8 +3,12 @@ import elements from './elements';
 import TTable from './components/Table.vue'
 import TPagination from './components/Pagination.vue'
 import TCell from './components/Cell.vue'
+import TFilter from './components/Filter.vue'
 import THeader from './components/Header.vue'
 import TFilters from './components/Filters.vue'
+import TSearch from './components/Search.vue'
+import TRange from './components/Range.vue'
+
 class Table {
 
     constructor() {
@@ -50,12 +54,44 @@ class Table {
 
             app.component(result.replaceAll("--", "-"), definition.default);
         });
+
+        Object.entries(
+            import.meta.glob("./components/filters/**/*.vue", {
+                eager: true,
+            })
+        ).forEach(([path, definition]) => {
+            const component = path.replaceAll("./components/filters", "");
+
+            const re = /\/\s(\w+)/;
+            let name = component
+                .replaceAll("/", " ")
+                .replace(/\.\w+$/, "");
+
+            const regex = /[A-Z]/g;
+
+            const arrays = path.match(regex);
+
+            arrays.map((v, i) => {
+                // name = capitalize(name);
+                name = name.replace(v, "".concat(v));
+            });
+            name = name.replaceAll(" ", "").replaceAll("--", "-") 
+
+            let result = name.concat('Filter');
+
+            console.log(result );
+
+            app.component(result, definition.default);
+        });
         
         app.component('TTable', TTable)
         app.component('TPagination', TPagination)
         app.component('TCell', TCell)
         app.component('THeader', THeader)
         app.component('TFilters', TFilters)
+        app.component('TFilter', TFilter)
+        app.component('TSearch', TSearch)
+        app.component('TRange', TRange)
     }
 
     extend(extendWith) {
