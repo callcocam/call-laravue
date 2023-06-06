@@ -1,15 +1,13 @@
 <template>
     <main class="flex-1">
-        <m-breadcrumb />
-        <!-- Page title & actions -->
-        
+        <!-- Page title & actions -->        
         <template v-if="component()">
            <component :is="component()"></component>
         </template>
         <template v-else>
+        <m-breadcrumb />
             <div>
-
-                View dsgsg
+                View
             </div>
         </template>
 

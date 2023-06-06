@@ -66,6 +66,7 @@ import notification from './plugins/magics/notification'
 import tooltip from "./directives/tooltip";
 import expandedItem from './directives/expanded-item';
 import expanded from './directives/expanded';
+import draggable from './directives/draggable';
 
 app.use(i18nPlugin, {
     'Update photo': 'Alterar foto de perfil',
@@ -134,6 +135,7 @@ app.directive("expanded-item", expandedItem);
 app.directive("expanded", expanded);
 app.directive('popper', popper)
 app.directive("tooltip", tooltip);
+app.directive("draggable",  draggable);
 
 app.directive('focus', {
     // When the bound element is mounted into the DOM...

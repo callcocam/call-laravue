@@ -6,12 +6,12 @@
                 <button @click="openDrawer" type="button" class="hover:text-green-200">
                     <x-icon name="fa-edit" class="w-5 h-5" />
                 </button>
-                <button type="button" class="  hover:text-red-200">
+                <button @click="removeItem(element.id)" type="button" class="  hover:text-red-200">
                     <x-icon name="fa-regular-trash-alt" class="w-5 h-5" />
                 </button>
             </div>
         </div>
-        <CFormInput :type="element.type" :label="element.name" :options="element.options" />
+        <CFormInput :type="element.type" :label="element.name" :name="element.slug"  :options="element.options" />
     </div>
     <TransitionRoot :show="showDrawer">
         <TransitionChild class="fixed inset-0 z-[100] bg-slate-900/60 transition-opacity duration-200" @click="closeDrawer"
@@ -25,6 +25,7 @@
 import { computed, ref } from 'vue';
 import { TransitionChild, TransitionRoot } from '@headlessui/vue'
 
+const emit = defineEmits(['removeItem'])
 
 const showDrawer = ref(false)
 
@@ -42,4 +43,9 @@ const closeDrawer = () => {
 const openDrawer = () => {
     showDrawer.value = true
 }
+
+const removeItem = (id) => {
+    emit('removeItem', id)
+}
+
 </script>

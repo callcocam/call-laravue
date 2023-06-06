@@ -1,24 +1,16 @@
 import { isPlainObject } from "lodash";
-
-// import ElementPlus from 'element-plus';
-// import 'element-plus/theme-chalk/index.css';
+ 
 
 import {
     VueDraggableNext
 } from "vue-draggable-next";
 
+import DraggableWarp from "./components/form/DraggableWarp.vue"; 
 
-import DraggableWarp from "./components/form/DraggableWarp.vue";
-// import OptionInput from "./components/form/OptionInput.vue";
-// import UploadWarp from "./components/form/elementWarp/UploadWarp.vue";
-
-import ptBr from 'element-plus/es/locale/lang/pt-br';
-
-
-import hljs from 'highlight.js';
 
 
 import Main from './components/Main.vue'
+import Boards from './components/Boards.vue'
 class Make {
 
     constructor() {
@@ -62,6 +54,7 @@ class Make {
             app.component(result.replaceAll("--", "-"), definition.default);
         });
         app.component('xMain', Main);
+        app.component('xBoards', Boards);
 
 
         app.component("draggable", VueDraggableNext);

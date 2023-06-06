@@ -1525,7 +1525,7 @@ class SidebarPanel
                         'name' => 'makes.index',
                         'crud'=>true,
                         'meta'=>[
-                            'componentView'=>'xMain'
+                            'componentView'=>'xBoards'
                         ]
                     ],
                     'operacional_post' => [

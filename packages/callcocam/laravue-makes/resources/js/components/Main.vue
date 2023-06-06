@@ -56,20 +56,43 @@
                     </draggable>
                 </div>
             </div>
-
         </div>
-        <div class=" col-span-4 md:col-span-3">
-            <draggable class="dragArea list-group w-full border h-full p-2 grid grid-cols-12 content-start gap-2"
-                :list="fields.destination" group="people" @change="log" :move="checkMove">
-                <template v-for="(element, index) in fields.destination" :key="index.toString().concat('-destination')">
-                    <x-m-fields-element :element="getNewItem(element, index)" />
-                </template>
-            </draggable>
+        <div class="col-span-4 md:col-span-3">
+            <div class="grid grid-cols-12 w-full h-full">
+                <div class="col-span-12 md:col-span-3">
+                    <draggable class="dragArea list-group w-full border h-full p-2 grid grid-cols-12 content-start gap-2"
+                        :list="fields.left" group="people" @change="log" :move="checkMove">
+                        <template v-for="(element, index) in fields.left" :key="index.toString().concat('-left')">
+                            <x-m-fields-element :element="getNewItem(element, index)"
+                                @removeItem="$event=> removeItem($event, 'left')" />
+                        </template>
+                    </draggable>
+                </div>
+                <div class="col-span-12 md:col-span-6">
+                    <draggable class="dragArea list-group w-full border h-full p-2 grid grid-cols-12 content-start gap-2"
+                        :list="fields.defaults" group="people" @change="log" :move="checkMove">
+                        <template v-for="(element, index) in fields.defaults" :key="index.toString().concat('-defaults')">
+                            <x-m-fields-element :element="getNewItem(element, index)"
+                                @removeItem="$event=> removeItem($event, 'defaults')" />
+                        </template>
+                    </draggable>
+                </div>
+                <div class="col-span-12 md:col-span-3">
+                    <draggable class="dragArea list-group w-full border h-full p-2 grid grid-cols-12 content-start gap-2"
+                        :list="fields.right" group="people" @change="log" :move="checkMove">
+                        <template v-for="(element, index) in fields.right" :key="index.toString().concat('-right')">
+                            <x-m-fields-element :element="getNewItem(element, index)"
+                                @removeItem="$event=> removeItem($event, 'right')" />
+                        </template>
+                    </draggable>
+                </div>
+            </div>
 
         </div>
     </div>
 </template>
 <script setup>
+import { get, uniqueId } from 'lodash';
 import { ref, inject, onMounted, reactive } from 'vue';
 
 const MAKEAPP = inject('MAKE')
@@ -79,41 +102,11 @@ const enabled = ref(true)
 const dragging = ref(false)
 
 const showDrawer = ref(false)
-const fields =  reactive({
-    origin: [
-        // {
-        //     id: 1,
-        //     icon: 'fa-text-width',
-        //     label: 'Input text',
-        //     type: 'text',
-        //     span: '12'
-        // },
-        // {
-        //     id: 2,
-        //     icon: 'fa-regular-check-square',
-        //     label: 'Input checkbox',
-        //     type: 'checkbox',
-        //     span: '12',
-        //     options: ['One', 'Thu']
-        // },
-        // {
-        //     id: 3,
-        //     icon: 'fa-regular-check-circle',
-        //     label: 'Input radio',
-        //     type: 'radio',
-        //     span: '12',
-        //     options: ['One', 'Thu']
-        // },
-        // {
-        //     id: 4,
-        //     icon: 'fa-regular-check-circle',
-        //     label: 'Input Select',
-        //     type: 'select',
-        //     span: '12',
-        //     options: ['One', 'Thu']
-        // }
-    ],
-    destination: []
+const fields = reactive({
+    origin: [],
+    left: [],
+    defaults: [],
+    right: [],
 
 })
 
@@ -130,13 +123,7 @@ function add(added) {
 function replace() {
     console.log('replace')
 }
-function checkMove(event) {
-    // if (!dragging.value) {
-    //     elements.value.push(Object.assign({}, event.draggedContext.element, {
-    //         id: event.draggedContext.futureIndex
-    //     }))
-    // }
-
+function checkMove(event) {  
     dragging.value = true
     // console.log('Future index: ' + event.draggedContext.futureIndex)
 }
@@ -162,13 +149,29 @@ function log(event) {
 
 function getNewItem(item, index) {
     return Object.assign({}, item, {
-        id: index
+        _id_: uniqueId('destination')
     })
+}
+
+function removeValue(value, index, arr) {
+    if (value === 2) {
+        // Removes the value from the original array
+        arr.splice(index, 1);
+        return true;
+    }
+    return false;
+}
+
+function removeItem(id, board) {
+    fields[board] = fields[board].filter(function (item) {
+        console.log(item.id, id)
+        return item.id !== id
+    });
 }
 
 onMounted(async () => {
     const perPage = 1000
-    const { data } = await MAKEAPP.get('make/fields', {perPage}).then(resp=>resp.data)
+    const { data } = await MAKEAPP.get('make/fields', { perPage }).then(resp => resp.data)
     fields.origin = data
 })
 
