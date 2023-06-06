@@ -1,9 +1,8 @@
 <template>
     <div :class="[wrapperClass, span]">
-        <component v-if="component" :is='context.component'  :context="context"
-            v-bind="context.slotProps.component" />
+        <component v-if="component" :is='context.component' :context="context" v-bind="context.slotProps.component" />
         <component :is="context.slotComponents.errors" v-if="!context.disableErrors" :visibleErrors="hasVisibleErrors"
-            :name="name" /> 
+            :name="name" />
     </div>
 </template>
 <script>
@@ -58,6 +57,10 @@ export default {
         },
         checked: {
             type: [String, Boolean],
+            default: false
+        },
+        isGrouped: {
+            type: Boolean,
             default: false
         },
         id: {
@@ -121,7 +124,7 @@ export default {
             default: 'default'
         },
         models: {
-            type: [String,Object, Array, Boolean],
+            type: [String, Object, Array, Boolean],
             default: false
         },
     },
@@ -161,21 +164,21 @@ export default {
     },
     watch: {
         '$attrs': {
-            handler(value) { 
+            handler(value) {
                 this.updateLocalAttributes(value)
             },
             deep: true
         },
 
         proxy: {
-            handler: function (newValue, oldValue) { 
+            handler: function (newValue, oldValue) {
                 this.$emit('update:modelValue', newValue)
             },
             deep: true
         },
         formValue: {
             handler: function (newValue, oldValue) {
-                this.$emit('update:modelValue', newValue) 
+                this.$emit('update:modelValue', newValue)
             },
             deep: true
         },

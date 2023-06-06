@@ -1,0 +1,2 @@
+const generate = () => { }
+export { generate }

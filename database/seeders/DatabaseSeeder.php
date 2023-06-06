@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\TenantSeeder;
+use SIGA\Makes\Models\MakeField;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,9 +23,10 @@ class DatabaseSeeder extends Seeder
 
         // $this->call(TenantSeeder::class);
         // $this->call(FileManagerSeeder::class);
-        $this->call(CategorySeeder::class);
-        $this->call(PostSeeder::class);
+        // $this->call(CategorySeeder::class);
+        // $this->call(PostSeeder::class);
         // $this->call(MenuSeeder::class);
         // $this->call(SubMenuSeeder::class);
+        $this->call(MakeFieldsSeeder::class);
     }
 }

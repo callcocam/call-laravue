@@ -155,7 +155,7 @@ export const dataClasses = {
 
 const baseClasses = (b, classContext) => {
     const classifications = get(dataClasses, classContext.classification)
-    console.log(classContext.classification)
+    // console.log(classContext.classification)
     if (classifications) {
         const classesStyles = get(classifications, classContext.styles)
         if (classesStyles) {

@@ -1,11 +1,30 @@
 import { isPlainObject } from "lodash";
 
+// import ElementPlus from 'element-plus';
+// import 'element-plus/theme-chalk/index.css';
+
+import {
+    VueDraggableNext
+} from "vue-draggable-next";
+
+
+import DraggableWarp from "./components/form/DraggableWarp.vue";
+// import OptionInput from "./components/form/OptionInput.vue";
+// import UploadWarp from "./components/form/elementWarp/UploadWarp.vue";
+
+import ptBr from 'element-plus/es/locale/lang/pt-br';
+
+
+import hljs from 'highlight.js';
+
+
+import Main from './components/Main.vue'
 class Make {
 
     constructor() {
 
         this.options = {
-
+            service: null
         }
     }
 
@@ -17,7 +36,7 @@ class Make {
 
 
         Object.entries(
-            import.meta.glob("./components/**/*.vue", {
+            import.meta.glob("./components/m/**/*.vue", {
                 eager: true,
             })
         ).forEach(([path, definition]) => {
@@ -42,7 +61,13 @@ class Make {
 
             app.component(result.replaceAll("--", "-"), definition.default);
         });
+        app.component('xMain', Main);
 
+
+        app.component("draggable", VueDraggableNext);
+        app.component("draggable-warp", DraggableWarp);
+
+        app.provide('MAKE', this)
 
     }
 
@@ -75,6 +100,19 @@ class Make {
             }
         }
         return merged
+    }
+
+    post(path, formData, options = {}) {
+        return this.options.service.post(path, formData, options)
+    }
+
+    put(path, formData, options = {}) {
+        formData.append('_method', 'PUT')
+        return this.options.service.post(path, formData, options)
+    }
+
+    get(path, formData, options = {}) {
+        return this.options.service.get(path, formData, options)
     }
 
 }

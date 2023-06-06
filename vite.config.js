@@ -1,6 +1,12 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+
+import ElementPlus from 'unplugin-element-plus/vite'
+import Components from 'unplugin-vue-components/vite'
+
 import vue from '@vitejs/plugin-vue';
+
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import {
     fileURLToPath,
     URL
@@ -31,6 +37,13 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
+        }),
+        ElementPlus({
+            importStyle: 'sass',
+            useSource: true
+        }),
+        Components({
+            resolvers: [ElementPlusResolver()]
         }),
     ],
     resolve: {

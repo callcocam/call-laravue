@@ -40,7 +40,7 @@ const createSubRoute = (sub) => {
 
 };
 
-const createCrud = (path_name, route_name, label) => {
+const createCrud = (path_name, route_name, label, meta={}) => {
 
     return {
         path: path_name,
@@ -61,6 +61,10 @@ const createCrud = (path_name, route_name, label) => {
                         path: ":id/excluir",
                         name: route_name.replace(".index", ".destroy"),
                         component: () => import("@/views/crud/Delete.vue"),
+                        meta: {
+                            label,
+                            component: meta.hasOwnProperty('componentDelete') ? meta.componentDelete : '',
+                        },
                     },
                 ],
             },
@@ -68,16 +72,28 @@ const createCrud = (path_name, route_name, label) => {
                 path: ":id/editar",
                 name: route_name.replace(".index", ".edit"),
                 component: () => import("@/views/crud/Edit.vue"),
+                meta: {
+                    label,
+                    component: meta.hasOwnProperty('componentEdit') ? meta.componentEdit : '',
+                },
             },
             {
                 path: ":id/visualizar",
                 name: route_name.replace(".index", ".show"),
-                component: () => import("@/views/crud/View.vue"),
+                component: () => import("@/views/crud/View.vue"),                
+                meta: {
+                    label,
+                    component: meta.hasOwnProperty('componentView') ? meta.componentView : '',
+                }, 
             },
             {
                 path: "cadastar",
                 name: route_name.replace(".index", ".create"),
                 component: () => import("@/views/crud/Create.vue"),
+                meta: {
+                    label,
+                    component: meta.hasOwnProperty('componentCreate') ? meta.componentCreate : '',
+                },
             }
         ],
     }
@@ -113,7 +129,8 @@ const cretaeRoutes = (data) => {
                             path_name = menus.path_name.concat('/').concat(path_name);
                         }
                         if (menu.hasOwnProperty("crud") && menu.crud) {
-                            routers.push(createCrud(path_name, route_name, menu.title));
+                            const { meta } = menu
+                            routers.push(createCrud(path_name, route_name, menu.title, meta));
                         } else {
                             routers.push(createMenuRoute(path_name, route_name, [], menu.component));
                         }

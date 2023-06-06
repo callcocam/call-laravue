@@ -120,7 +120,9 @@ app.use(Menu, {
     http: useApi()
 })
 
-app.use(Make, {})
+app.use(Make, {
+    service: useApi(),
+})
 
 app.use(Table, {
     http: useApi()
@@ -136,11 +138,11 @@ app.directive("tooltip", tooltip);
 app.directive('focus', {
     // When the bound element is mounted into the DOM...
     mounted(el) {
-      // Focus the element
-      el.focus()
+        // Focus the element
+        el.focus()
     }
-  })
-  
+})
+
 import { cretaeRoutes } from './routers';
 
 useApi().get("load/menus").then(resp => {

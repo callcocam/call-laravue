@@ -24,6 +24,7 @@
     </div>
     
     <div id="modals"></div>
+    <div id="x-teleport-target"></div>
 </body>
 
 </html>

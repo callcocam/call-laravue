@@ -5,15 +5,15 @@
 * https://www.sigasmart.com.br
 */
 
-namespace {{ factoryNamespace }};
-
+namespace Database\Factories\SIGA\Makes\Models;
+ 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use SIGA\Models\Tenant as ModelsTenant;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\{{ namespacedModel }}>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MakeFieldOptions>
  */
-class {{ factory }}Factory extends Factory
+class MakeFieldOptionsFactory extends Factory
 {
     /**
      * Define the model's default state.

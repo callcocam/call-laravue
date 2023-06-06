@@ -1523,7 +1523,10 @@ class SidebarPanel
                         'path_name' => '/makes',
                         'key' => 'operacional/makes',
                         'name' => 'makes.index',
-                        'crud'=>true
+                        'crud'=>true,
+                        'meta'=>[
+                            'componentView'=>'xMain'
+                        ]
                     ],
                     'operacional_post' => [
                         'title' => 'Posts',

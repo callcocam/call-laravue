@@ -23,6 +23,9 @@ export default {
         './packages/callcocam/laravue-form/resources/**/*.{vue,js,ts,jsx,tsx}',
         
 
+        './packages/callcocam/laravue-makes/resources/views/*.blade.php',
+        './packages/callcocam/laravue-makes/resources/**/*.{vue,js,ts,jsx,tsx}',
+
         './packages/callcocam/laravue-table/resources/views/*.blade.php',
         './packages/callcocam/laravue-table/resources/**/*.{vue,js,ts,jsx,tsx}',
         
