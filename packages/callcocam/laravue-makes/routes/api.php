@@ -9,9 +9,13 @@
 use Illuminate\Support\Facades\Route;
 use SIGA\Makes\Http\Controllers\Api\MakeController;
 use SIGA\Makes\Http\Controllers\Api\MakeFieldController;
+use SIGA\Makes\Http\Controllers\Api\MakeBoardController;
+use SIGA\Makes\Http\Controllers\Api\MakeBoardItemController;
 
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('makes', MakeController::class);
     Route::resource('make/fields', MakeFieldController::class);
+    Route::resource('make/boards', MakeBoardController::class);
+    Route::resource('make/board/items', MakeBoardItemController::class);
 });

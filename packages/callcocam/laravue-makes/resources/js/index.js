@@ -1,13 +1,4 @@
 import { isPlainObject } from "lodash";
- 
-
-import {
-    VueDraggableNext
-} from "vue-draggable-next";
-
-import DraggableWarp from "./components/form/DraggableWarp.vue"; 
-
-
 
 import Main from './components/Main.vue'
 import Boards from './components/Boards.vue'
@@ -54,12 +45,7 @@ class Make {
             app.component(result.replaceAll("--", "-"), definition.default);
         });
         app.component('xMain', Main);
-        app.component('xBoards', Boards);
-
-
-        app.component("draggable", VueDraggableNext);
-        app.component("draggable-warp", DraggableWarp);
-
+        app.component('xBoards', Boards); 
         app.provide('MAKE', this)
 
     }
@@ -106,6 +92,10 @@ class Make {
 
     get(path, formData, options = {}) {
         return this.options.service.get(path, formData, options)
+    }
+
+    delete(path, formData, options = {}) {
+        return this.options.service.delete(path, formData, options)
     }
 
 }

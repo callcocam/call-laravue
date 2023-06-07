@@ -23,46 +23,73 @@
                     </svg>
                 </span>
             </label>
-        </div>
-        <div class="flex h-[calc(100vh-8.5rem)] flex-grow flex-col">
-            <div v-draggable="{
-                animation: 200,
-                easing: 'cubic-bezier(0, 0, 0.2, 1)',
-                delay: 150,
-                delayOnTouchOnly: true,
-                draggable: '.board-draggable',
-                handle: '.board-draggable-handler',
 
-            }"
-                class="kanban-scrollbar grid grid-cols-12 w-full items-start gap-4 overflow-x-auto overflow-y-hidden  transition-all duration-[.25s]">
-                <Board title="Left Column" icon="fa-align-left" span="3" :fields="fields" />
-                <Board title="Center Column" icon="fa-align-center" span="6" :fields="fields" />
-                <Board title="Right Column" icon="fa-align-right" span="3" :fields="fields" />
-                <div class="w-72 shrink-0">
-                    <button
-                        class="btn w-full bg-slate-150 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
-                        New Board
-                    </button>
-                </div>
+            <div class="w-72 shrink-0">
+                <AddBoard :make-id="route.params.id" @loadBoards="loadBoards" />
             </div>
         </div>
+        <div class="flex h-[calc(100vh-8.5rem)] flex-grow flex-col">
+
+            <template v-if="boards.length">
+                <EditElement @loadBoards="loadBoards" />
+                <DeleteElement @loadBoards="loadBoards" />
+                <div v-draggable="{
+                    animation: 200,
+                    easing: 'cubic-bezier(0, 0, 0.2, 1)',
+                    delay: 150,
+                    delayOnTouchOnly: true,
+                    draggable: '.board-draggable',
+                    handle: '.board-draggable-handler',
+
+                }"
+                    class="kanban-scrollbar grid grid-cols-12 w-full items-start gap-4 overflow-x-auto overflow-y-hidden  transition-all duration-[.25s]">
+                    <Board v-for="(board, index) in boards" :key="index" :board="board" :fields="fields"
+                        @loadBoards="loadBoards" />
+                </div>
+            </template>
+            <template v-else>
+                <div class="flex w-full items-center h-full justify-center">
+                    <img class="w-96" src="/images/illustrations/empty-board.svg" alt="No boards">
+                </div>
+            </template>
+        </div>
+
     </main>
 </template>
 <script setup>
 import { inject, onMounted, ref } from 'vue';
 import Board from './Board.vue'
+import AddBoard from './AddBoard.vue'
+import { useRoute } from 'vue-router'
+import EditElement from './EditElement.vue';
+import DeleteElement from './DeleteElement.vue';
+const route = useRoute()
 
-
-const fields = ref({})
+const boards = ref([])
+const fields = ref([])
 
 const MAKEAPP = inject('MAKE')
 
+const loadBoards = (async () => {
+
+    const perPage = 1000
+    
+    boards.value = []
+
+    const { data } = await MAKEAPP.get('make/boards', { perPage })
+
+    boards.value = data
+})
+
 onMounted(async () => {
+
+    await loadBoards()
 
     const perPage = 1000
 
-    const { data } = await MAKEAPP.get('make/fields', { perPage }).then(resp => resp.data)
+    const { data } = await MAKEAPP.get('make/fields', { perPage })
 
     fields.value = data
+
 })
 </script>

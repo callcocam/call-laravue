@@ -4,13 +4,12 @@
 * User: callcocam@gmail.com, contato@sigasmart.com.br
 * https://www.sigasmart.com.br
 */
-
 namespace SIGA\Makes\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use SIGA\Models\AbstractModel;
 
-class MakeBoard extends AbstractModel
+class MakeBoardItemOption extends AbstractModel
 {
     use HasFactory;
     
@@ -23,11 +22,5 @@ class MakeBoard extends AbstractModel
         'id'
     ];
 
-    protected $with = ['items'];
-
-    public function items()
-    {
-        return $this->hasMany(MakeBoardItem::class);
-    }
 
 }

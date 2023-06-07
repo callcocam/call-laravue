@@ -16,7 +16,6 @@ class MakeFieldController extends AbstractController
 {
 
     protected $model = MakeField::class;
-
-    protected $resourse = MakeFieldResource::class;
+ 
     
 }

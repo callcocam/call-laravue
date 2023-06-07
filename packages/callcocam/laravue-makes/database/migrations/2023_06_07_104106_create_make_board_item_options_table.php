@@ -19,15 +19,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('make_boards', function (Blueprint $table) {
+        Schema::create('make_board_item_options', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUlid('tenant_id')->nullable()->constrained('tenants')->cascadeOnDelete();
             $table->foreignUlid('user_id')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->foreignUlid('make_id')->nullable()->constrained('makes')->cascadeOnDelete();
+            $table->foreignUlid('make_board_item_id')->nullable()->constrained('make_board_items')->cascadeOnDelete();
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
-            $table->string('span')->default('12')->nullable();
-            $table->string('icon')->default('fa-align-center')->nullable();
             $table->string('description')->nullable();
             $table->integer('ordering')->nullable();
             $table->enum('status', ['draft', 'published'])->default('published');
@@ -43,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('make_boards');
+        Schema::dropIfExists('make_board_item_options');
     }
 };

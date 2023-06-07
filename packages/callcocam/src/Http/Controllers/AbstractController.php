@@ -19,6 +19,8 @@ class AbstractController extends BaseController
 {
     use HelperController;
 
+    protected $event;
+
     protected $model;
 
     protected $resourse;
@@ -35,6 +37,15 @@ class AbstractController extends BaseController
                         $resourse->init($this->model, 'makes')->icon('fa-layer-group')->toArray(),
                         app($this->model)->query()->filter($request, $resourse->filters)->paginate($request->query('perPage', 12))->toArray()
                     );
+                    return response()->json($data);
+                } catch (\Exception $ex) {
+                    return $this->PDOError($ex);
+                }
+            }
+        } else {
+            if ($this->model) {
+                try {
+                    $data = app($this->model)->query()->filter($request, [])->get()->toArray();
                     return response()->json($data);
                 } catch (\Exception $ex) {
                     return $this->PDOError($ex);
@@ -72,9 +83,14 @@ class AbstractController extends BaseController
                 $data = $request->input();
                 $request->validate($this->rules($request, $model));
                 try {
+                    $data['user_id'] = $request->user()->id;
+
                     $model = $model->create($data);
                     if ($model) {
                         //Upload action
+                    }
+                    if ($this->event) {
+                        event($this->event, $model );
                     }
                     $result =  $model->toArray();
                     return response()->json($this->FOUNSuccess($result, "Registro criado com sucesso!!"), 201);
