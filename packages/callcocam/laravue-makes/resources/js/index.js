@@ -2,6 +2,7 @@ import { isPlainObject } from "lodash";
 
 import Main from './components/Main.vue'
 import Boards from './components/Boards.vue'
+import draggable from "./directives/draggable";
 class Make {
 
     constructor() {
@@ -45,8 +46,14 @@ class Make {
             app.component(result.replaceAll("--", "-"), definition.default);
         });
         app.component('xMain', Main);
-        app.component('xBoards', Boards); 
+        
+        app.component('xBoards', Boards);
+
         app.provide('MAKE', this)
+
+
+        app.directive("draggable", draggable);
+
 
     }
 

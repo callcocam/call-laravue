@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between space-x-2 py-5 transition-all duration-[.25s] ">
             <div class="flex items-center space-x-1">
                 <h3 class="text-lg font-medium text-slate-700 line-clamp-1 dark:text-navy-50">
-                    Make APP
+                    Make <b v-if="make" class="text-success uppercase">{{ make.name }}</b> APP CRUD
                 </h3>
                 <button
                     class="btn hidden h-8 w-8 rounded-full p-0 font-medium text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25 sm:inline-flex">
@@ -24,8 +24,10 @@
                 </span>
             </label>
 
-            <div class="w-72 shrink-0">
+            <div class="space-x-2 shrink-0 flex items-center justify-between">
+                <router-link :to="{ name: 'makes.index' }">{{ $t('Back to list') }}</router-link>
                 <AddBoard :make-id="route.params.id" @loadBoards="loadBoards" />
+                <AddField :make-id="route.params.id" @loadBoards="loadBoards" />
             </div>
         </div>
         <div class="flex h-[calc(100vh-8.5rem)] flex-grow flex-col">
@@ -33,19 +35,13 @@
             <template v-if="boards.length">
                 <EditElement @loadBoards="loadBoards" />
                 <DeleteElement @loadBoards="loadBoards" />
-                <div v-draggable="{
-                    animation: 200,
-                    easing: 'cubic-bezier(0, 0, 0.2, 1)',
-                    delay: 150,
-                    delayOnTouchOnly: true,
-                    draggable: '.board-draggable',
-                    handle: '.board-draggable-handler',
-
-                }"
-                    class="kanban-scrollbar grid grid-cols-12 w-full items-start gap-4 overflow-x-auto overflow-y-hidden  transition-all duration-[.25s]">
-                    <Board v-for="(board, index) in boards" :key="index" :board="board" :fields="fields"
+                <DraggableBoard>
+                    <Board v-for="(board, index) in boards"
+                        :key="index" :board="board"
+                        :fields="fields"
+                        :board-id="board.id"
                         @loadBoards="loadBoards" />
-                </div>
+                </DraggableBoard>
             </template>
             <template v-else>
                 <div class="flex w-full items-center h-full justify-center">
@@ -60,11 +56,15 @@
 import { inject, onMounted, ref } from 'vue';
 import Board from './Board.vue'
 import AddBoard from './AddBoard.vue'
+import AddField from './AddField.vue'
 import { useRoute } from 'vue-router'
 import EditElement from './EditElement.vue';
 import DeleteElement from './DeleteElement.vue';
+import { get } from 'lodash';
+import DraggableBoard from './DraggableBoard.vue';
 const route = useRoute()
 
+const make = ref(null)
 const boards = ref([])
 const fields = ref([])
 
@@ -73,23 +73,22 @@ const MAKEAPP = inject('MAKE')
 const loadBoards = (async () => {
 
     const perPage = 1000
-    
+
+    const ordering = 'ASC'
+
     boards.value = []
 
-    const { data } = await MAKEAPP.get('make/boards', { perPage })
+    const { data } = await MAKEAPP.get(('makes/').concat(route.params.id))
 
-    boards.value = data
+    make.value = data
+
+    boards.value = get(data, 'boards', [])
 })
 
 onMounted(async () => {
 
     await loadBoards()
-
-    const perPage = 1000
-
-    const { data } = await MAKEAPP.get('make/fields', { perPage })
-
-    fields.value = data
+ 
 
 })
 </script>

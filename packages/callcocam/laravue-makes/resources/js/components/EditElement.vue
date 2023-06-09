@@ -72,7 +72,13 @@
                         <textarea rows="2" placeholder="Help..."
                             class="form-textarea mt-1.5 w-full resize-none rounded-lg bg-slate-150 p-2.5 placeholder:text-slate-400 dark:bg-navy-900 dark:placeholder:text-navy-300"></textarea>
                     </label>
-                    <template v-if="form.options">
+                    <template v-if="['checkbox', 'radio', 'select'].includes(form.type)">                        
+                        <Options :field="form" :options="form.options" />
+                        <div class="flex items-center">
+                            <div class="my-2 mx-4 h-px shrink-0 bg-slate-200 dark:bg-navy-500 flex-1"></div>
+                            <span class="text-base font-medium text-slate-700 dark:text-navy-100">DB</span>
+                            <div class="my-2 mx-4 h-px shrink-0 bg-slate-200 dark:bg-navy-500 flex-1"></div>
+                        </div>
                         <label class="block">
                             <span>Elemento Fonte</span>
                             <input v-model="form.model"
@@ -107,6 +113,7 @@ import { TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { useManagerMakeElementStore } from '@laravue-makes/stores/element'
 import ErrorService from "@/services/ErrorService";
 import { map } from 'lodash';
+import Options from './Options.vue';
 
 const emit = defineEmits(['closeDrawer'])
 
@@ -130,7 +137,7 @@ const apply = async () => {
         } else {
             formData.append(name, JSON.stringify(item))
         }
-    }) 
+    })
     try {
         const { data } = await MAKEAPP.put(('make/board/items/').concat(form.value.id), formData)
         const { message, form_data } = data

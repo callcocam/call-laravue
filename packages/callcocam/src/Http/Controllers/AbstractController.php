@@ -81,21 +81,39 @@ class AbstractController extends BaseController
         if ($this->model) {
             if ($model = app($this->model)) {
                 $data = $request->input();
-                $request->validate($this->rules($request, $model));
-                try {
-                    $data['user_id'] = $request->user()->id;
+                if (!$request->has('no-validation')) {
+                    $request->validate($this->rules($request, $model));
+                }
+                if ($request->has('orderings')) {
+                    try {
+                        $this->reorderItems($request);
+                        return response()->json($this->FOUNSuccess([], "Items reordenado com sucesso!!"), 201);
+                    } catch (PDOException $PDOError) {
+                        return $this->PDOError($PDOError);
+                    }
+                } elseif ($request->has('groups')) {
+                    try {
+                        $this->reorderGroups($request);
+                        return response()->json($this->FOUNSuccess([], "Grupos reordenado com sucesso!!"), 201);
+                    } catch (PDOException $PDOError) {
+                        return $this->PDOError($PDOError);
+                    }
+                } else {
+                    try {
+                        $data['user_id'] = $request->user()->id;
 
-                    $model = $model->create($data);
-                    if ($model) {
-                        //Upload action
+                        $model = $model->create($data);
+                        if ($model) {
+                            //Upload action
+                        }
+                        if ($this->event) {
+                            event($this->event, $model);
+                        }
+                        $result =  $model->toArray();
+                        return response()->json($this->FOUNSuccess($result, "Registro criado com sucesso!!"), 201);
+                    } catch (PDOException $PDOError) {
+                        return $this->PDOError($PDOError);
                     }
-                    if ($this->event) {
-                        event($this->event, $model );
-                    }
-                    $result =  $model->toArray();
-                    return response()->json($this->FOUNSuccess($result, "Registro criado com sucesso!!"), 201);
-                } catch (PDOException $PDOError) {
-                    return $this->PDOError($PDOError);
                 }
             }
         }
@@ -162,16 +180,24 @@ class AbstractController extends BaseController
         if ($this->model) {
             if ($model = app($this->model)::find($id)) {
                 $data = $request->input();
-                $request->validate($this->rules($request, $model));
-                try {
-                    $model->update($data);
-                    if ($model) {
-                        // $this->appendAction($model,  $request->all());
+                if (!$request->has('no-validation')) {
+                    $request->validate($this->rules($request, $model));
+                }
+                if ($request->has('orderings')) {
+                    $this->reorderItems($request);
+                } elseif ($request->has('groups')) {
+                    $this->reorderGroups($request);
+                } else {
+                    try {
+                        $model->update($data);
+                        if ($model) {
+                            // $this->appendAction($model,  $request->all());
+                        }
+                        $result =  $model->toArray();
+                        return response()->json($this->FOUNSuccess($result), 201);
+                    } catch (PDOException $PDOError) {
+                        return $this->PDOError($PDOError);
                     }
-                    $result =  $model->toArray();
-                    return response()->json($this->FOUNSuccess($result), 201);
-                } catch (PDOException $PDOError) {
-                    return $this->PDOError($PDOError);
                 }
             }
         }

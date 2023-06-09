@@ -8,6 +8,8 @@
 
 namespace SIGA\Traits\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -15,8 +17,44 @@ use Illuminate\Support\Facades\Route;
  */
 trait HelperController
 {
+    public function query()
+    {
+        return app($this->model)->query();
+    }
 
-  
+    public function reorderGroups(Request $request)
+    {
+        $items = $request->input('groups', []);
+        $groups = $this->query()->findMany($items)
+            ->map(function ($group) use ($items) {
+                $group->ordering = array_flip($items)[$group->id];
+                return $group;
+            });
+        $this->query()->upsert(
+            $groups->toArray(),
+            ['id'],
+            ['ordering']
+        );
+    }
+
+    public function reorderItems(Request $request)
+    {
+
+        $groupColumn = $request->input('groupColumn');
+        $groupId = $request->input('groupId');
+        $items = json_decode($request->input('orderings', []), true);
+
+        DB::transaction(function () use ($items, $groupId, $groupColumn) {
+            $this->query()->findMany($items)
+                ->each(function ($item) use ($groupId, $items, $groupColumn) {
+                    $item->ordering = array_flip($items)[$item->id];
+                    $item->{$groupColumn} = $groupId;
+                    $item->save();
+                });
+        });
+    }
+
+
     protected function FOUNSuccess($result, $content = "Registro atualizado com sucesso!!")
     {
         return [

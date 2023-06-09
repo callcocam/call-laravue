@@ -31,7 +31,7 @@ class ViewsOrder extends FilterAbstract
                 return $builder->orderBy($column, $this->resolveOrderDirection($direction));
             }
             return $builder;
-        }
+        } 
         return $builder->orderBy($columns, $this->resolveOrderDirection($direction));
     }
 }

@@ -1,7 +1,8 @@
 <template>
-    <div :class="[('md:col-span-').concat(board.span)]"
-        class="col-span-12 border border-dotted p-2 rounded-lg board-draggable relative flex max-h-full shrink-0 flex-col w-full">
-        <div class="board-draggable-handler flex items-center justify-between w-full pb-3">
+    <div 
+    :class="[('md:col-span-').concat(board.span)]"
+        class=" card col-span-12 p-4 rounded-lg board-draggable relative flex max-h-full shrink-0 flex-col w-full">
+        <div class="board-draggable-handler flex relative items-center justify-between w-full pb-3 cursor-move">
             <div class="flex items-center space-x-2">
                 <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-info/10 text-info">
                     <x-icon :name="board.icon" class="text-base w-5 h-5" />
@@ -10,34 +11,29 @@
                     {{ board.name }}
                 </h3>
             </div>
-            <div class="flex space-x-1 items-center">
+            <div class="flex space-x-1 items-center absolute right-4">
                 <EditBoard :board="board" @loadBoards="$emit('loadBoards', $event)" />
                 <DeleteBoard :board="board" @loadBoards="$emit('loadBoards', $event)" />
             </div>
         </div>
-        <div v-draggable="{
-            animation: 200,
-            group: 'board-cards',
-            easing: 'cubic-bezier(0, 0, 0.2, 1)',
-            direction: 'vertical',
-            delay: 150,
-            delayOnTouchOnly: true,
-        }" class="is-scrollbar-hidden relative space-y-2.5 overflow-y-auto p-0.5">
-            <Element v-for="(field, index) in elements" :key="index" :field="field" @loadBoards="$emit('loadBoards', true)"/>
-        </div>
+        <Draggable  :board-id="board.id">
+            <Element v-for="(field, index) in elements" :key="field.id" :field="field" :field-id="field.id"
+                @loadBoards="$emit('loadBoards', true)" />
+        </Draggable>
         <div class="flex justify-center py-2">
-            <AddElement :fields="fields" @add="addField" />
+            <AddElement @add="addField" />
         </div>
     </div>
 </template>
 <script setup>
 import ErrorService from "@/services/ErrorService";
-import { inject, ref, defineEmits } from 'vue';
+import { inject, ref } from 'vue';
 import Element from './Element.vue'
 import AddElement from './AddElement.vue'
 import EditBoard from './EditBoard.vue';
 import DeleteBoard from './DeleteBoard.vue';
 import { find, get, map } from 'lodash';
+import Draggable from "./Draggable.vue";
 
 const MAKEAPP = inject('MAKE')
 
@@ -54,15 +50,14 @@ const props = defineProps({
 
 const elements = ref(props.board.items)
 
-const addField = async (id) => {
-    const field = find(props.fields, (item) => item.id == id)
+const addField = async (field) => {
+    console.log(field)
     if (field) {
         const formData = new FormData()
         map(field, (item, name) => {
             if (!name.includes('options')) {
                 formData.append(name, item)
-            }else{
-                
+            } else {
                 formData.append(name, JSON.stringify(item))
             }
         })

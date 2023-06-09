@@ -27,7 +27,7 @@ class MakeBoard extends AbstractModel
 
     public function items()
     {
-        return $this->hasMany(MakeBoardItem::class);
+        return $this->hasMany(MakeBoardItem::class)->orderBy('ordering');
     }
 
 }

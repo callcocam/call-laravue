@@ -32,4 +32,11 @@ class Make extends AbstractModel
         'updated_at' => 'datetime:Y-m-d',
     ];
 
+    protected $with = ['boards'];
+
+    public function boards()
+    {
+        return $this->hasMany(MakeBoard::class)->orderBy('ordering');
+    }
+
 }

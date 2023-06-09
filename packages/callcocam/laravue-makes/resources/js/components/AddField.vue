@@ -1,8 +1,8 @@
 <template>
-    <div >
-        <x-button @click="showModal = true" >
-            <x-icon name="fa-plus" class="h-6 w-6 mr-2" />
-            <span>{{ $t('New Board') }}</span>
+    <div>
+        <x-button @click="showModal = true" styles="default" variant="warning">
+            <x-icon name="fa-text-width" class="h-6 w-6 mr-2" />
+            <span>{{ $t('New Field') }}</span>
         </x-button>
         <TransitionRoot as="template" :show="showModal">
             <Teleport to="#x-teleport-target">
@@ -20,7 +20,7 @@
                             <DialogTitle
                                 class="flex justify-between text-base font-medium text-slate-700 dark:text-navy-100">
                                 <span>
-                                    {{ $t('Create new board') }}
+                                    {{ $t('Create new field') }}
                                 </span>
                                 <button @click="showModal = !showModal"
                                     class="btn -mr-1.5 h-7 w-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
@@ -36,17 +36,26 @@
                                                 class="form-input mt-1.5 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
                                                 :placeholder="$t('Name')" type="text" />
                                         </label>
-                                        <label class="block w-24">
-                                            <span>{{ $t('With') }}</span>
-                                            <input v-model="form.span"
-                                                class="form-input mt-1.5 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
-                                                placeholder="12" min="1" max="12" type="number" />
+                                        <label class="block flex-1">
+                                            <span>Tipo:</span>
+                                            <select v-model="form.type"
+                                                class="form-select mt-1.5 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900">
+                                                <option>--Selecion um tipo--</option>
+                                                <option v-for="(type, index) in types" :key="type" :value="type">{{ type }}
+                                                </option>
+                                            </select>
                                         </label>
                                     </div>
                                     <div class="flex items-center space-x-2">
                                         <label class="block w-full">
                                             <span>{{ $t('Icone') }}:</span>
                                             <x-m-fields-combobox-icons @update:modelValue="form.icon = $event" />
+                                        </label>
+                                        <label class="block w-24">
+                                            <span>{{ $t('With') }}</span>
+                                            <input v-model="form.span"
+                                                class="form-input mt-1.5 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
+                                                placeholder="12" min="1" max="12" type="number" />
                                         </label>
                                         <label class="block w-32">
                                             <span>{{ $t('Ordering') }}</span>
@@ -85,20 +94,41 @@ import { inject, ref, defineEmits } from 'vue';
 
 const emit = defineEmits(['loadBoards'])
 
-const props = defineProps({
-    makeId: {
-        type: String,
-    }
-})
-
 const MAKEAPP = inject('MAKE')
 
 const showModal = ref(false)
 
-const form = ref({})
-
+const form = ref({
+    span: 12,
+    ordering: 1,
+})
+const types = ref(
+    [
+        'text',
+        'hidden',
+        'email',
+        'phone',
+        'date',
+        'month',
+        'tel',
+        'datetime-local',
+        'file',
+        'password',
+        'number',
+        'range',
+        'color',
+        'textarea',
+        'radio',
+        'checkbox',
+        'select',
+        'file-manager',
+    ]
+)
 const cancel = () => {
-    form.value = {}
+    form.value = {
+        span: 12,
+        ordering: 1
+    }
     showModal.value = false
 }
 
@@ -107,10 +137,9 @@ const apply = async () => {
     map(form.value, (item, name) => {
         formData.append(name, item)
     })
-    formData.append('make_id', props.makeId)
     formData.append('status', 'published')
     try {
-        const { data } = await MAKEAPP.post('make/boards', formData)
+        const { data } = await MAKEAPP.post('make/fields', formData)
         const { message } = data
         if (message) {
             ErrorService.displaySuccessAlert(message);

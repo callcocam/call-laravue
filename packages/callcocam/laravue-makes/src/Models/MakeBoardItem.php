@@ -46,7 +46,12 @@ class MakeBoardItem extends AbstractModel
 
     public function getOptionsAttribute()
     {
-        return $this->make_board_items_options()->pluck('description', 'name')->toArray();
+        return $this->make_board_items_options()->select([
+            'id',
+            'ordering',
+            'name as value',
+            'description as label',
+        ])->get()->toArray();
     }
 
 

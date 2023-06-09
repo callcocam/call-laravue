@@ -135,7 +135,7 @@ app.directive("expanded-item", expandedItem);
 app.directive("expanded", expanded);
 app.directive('popper', popper)
 app.directive("tooltip", tooltip);
-app.directive("draggable",  draggable);
+// app.directive("draggable",  draggable);
 
 app.directive('focus', {
     // When the bound element is mounted into the DOM...

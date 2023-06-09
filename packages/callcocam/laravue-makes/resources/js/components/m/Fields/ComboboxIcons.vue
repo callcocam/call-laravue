@@ -2,10 +2,10 @@
     <Combobox v-model="selectedItem">
         <div class="relative flex-1">
             <div class="relative flex items-center">
-                <span class="absolute top-[30%] left-2" v-if="selectedItem">
-                    <x-icon :name="selectedItem" class="w-5 h-5" />
+                <span class="absolute top-[30%] left-2"  >
+                    <x-icon :name="selectedItem || 'fa-check'" class="w-5 h-5" />
                 </span>
-                <ComboboxInput
+                <ComboboxInput placeholder="Selcione um icone"
                     class="mt-1.5 pl-9 w-full rounded-lg bg-slate-150 px-3 py-2 ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
                     :displayValue="(option) => displayValue(option)" @change="query = $event.target.value" />
                 <ComboboxButton class="absolute inset-y-0 right-0  pr-2">
@@ -48,8 +48,8 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 
 const props = defineProps({
     value: {
-        type: [Boolean, String],
-        default: false
+        type: [String],
+        default: ''
     }
 })
 
